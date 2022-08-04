@@ -6,19 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ButtonFragment">
 
-
-    <TextView
-        android:id="@+id/history"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textAlignment="viewEnd"
-        android:textSize="24sp"
-        app:layout_constraintWidth_percent="0.95"
-        app:layout_constraintBottom_toTopOf="@+id/input"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <EditText
         android:id="@+id/input"
         android:layout_width="0dp"
@@ -26,19 +13,21 @@
         app:layout_constraintVertical_chainStyle="spread_inside"
         android:ems="10"
         android:inputType="number"
-        android:text="Enter your number"
+        android:text="@string/enterSmth"
         android:textAlignment="viewEnd"
         android:textColor="#555555"
-        android:textSize="25sp"
+        android:textSize="24sp"
+        android:fontFamily="Poppins"
         app:layout_constraintBottom_toTopOf="@+id/panel"
-        app:layout_constraintTop_toBottomOf="@+id/history"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.95"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="Autofill" />
 
     <include
         android:id="@+id/panel"
-        layout="@layout/button_panel_port"
+        layout="@layout/button_panel"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -47,6 +36,5 @@
         app:layout_constraintWidth_percent="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

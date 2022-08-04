@@ -2,21 +2,15 @@
 <TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:stretchColumns = "*">
 
     <TableRow>
     <Button
+        style="@style/DigitButtonStyle"
         android:id="@+id/btn1"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:onClick="onBtn1"
-        android:text="1"
-        android:textColor="#555555"
-        android:textSize="25sp"
+        android:text="@string/n1"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/btn4"
         app:layout_constraintEnd_toStartOf="@+id/btn2"
@@ -28,13 +22,8 @@
 
     <Button
         android:id="@+id/btn2"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:onClick="onBtn2"
-        android:text="2"
-        android:textColor="#555555"
-        android:textSize="25sp"
+        style="@style/DigitButtonStyle"
+        android:text="@string/n2"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/btn5"
         app:layout_constraintEnd_toStartOf="@+id/btn3"
@@ -45,13 +34,8 @@
 
     <Button
         android:id="@+id/btn3"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:onClick="onBtn3"
-        android:text="3"
-        android:textColor="#555555"
-        android:textSize="25sp"
+        style="@style/DigitButtonStyle"
+        android:text="@string/n3"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/btn6"
         app:layout_constraintEnd_toStartOf="@+id/add"
@@ -63,12 +47,8 @@
 
     <Button
         android:id="@+id/add"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:text="+"
-        android:textColor="#4CAF50"
-        android:textSize="25sp"
+        style="@style/OperationButtonStyle"
+        android:text="@string/add"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/sub"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,13 +61,8 @@
     <TableRow>
     <Button
         android:id="@+id/btn4"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:onClick="onBtn4"
-        android:text="4"
-        android:textColor="#555555"
-        android:textSize="25sp"
+        style="@style/DigitButtonStyle"
+        android:text="@string/n4"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/btn7"
         app:layout_constraintEnd_toStartOf="@+id/btn5"
@@ -98,13 +73,8 @@
 
     <Button
         android:id="@+id/btn5"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:onClick="onBtn5"
-        android:text="5"
-        android:textColor="#555555"
-        android:textSize="25sp"
+        style="@style/DigitButtonStyle"
+        android:text="@string/n5"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/btn8"
         app:layout_constraintEnd_toStartOf="@+id/btn6"
@@ -114,13 +84,8 @@
 
     <Button
         android:id="@+id/btn6"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:onClick="onBtn6"
-        android:text="6"
-        android:textColor="#555555"
-        android:textSize="25sp"
+        style="@style/DigitButtonStyle"
+        android:text="@string/n6"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/btn9"
         app:layout_constraintEnd_toStartOf="@+id/sub"
@@ -130,12 +95,8 @@
 
     <Button
         android:id="@+id/sub"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:text="-"
-        android:textColor="#4CAF50"
-        android:textSize="25sp"
+        style="@style/OperationButtonStyle"
+        android:text="@string/sub"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/mult"
         app:layout_constraintEnd_toEndOf="parent"
@@ -147,13 +108,8 @@
     <TableRow>
     <Button
         android:id="@+id/btn7"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:onClick="onBtn7"
-        android:text="7"
-        android:textColor="#555555"
-        android:textSize="25sp"
+        style="@style/DigitButtonStyle"
+        android:text="@string/n7"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/btnDot"
         app:layout_constraintEnd_toStartOf="@+id/btn8"
@@ -164,13 +120,8 @@
 
     <Button
         android:id="@+id/btn8"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:onClick="onBtn8"
-        android:text="8"
-        android:textColor="#555555"
-        android:textSize="25sp"
+        style="@style/DigitButtonStyle"
+        android:text="@string/n8"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/btn10"
         app:layout_constraintEnd_toStartOf="@+id/btn9"
@@ -180,13 +131,8 @@
 
     <Button
         android:id="@+id/btn9"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:onClick="onBtn9"
-        android:text="9"
-        android:textColor="#555555"
-        android:textSize="25sp"
+        style="@style/DigitButtonStyle"
+        android:text="@string/n9"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/btnPercent"
         app:layout_constraintEnd_toStartOf="@+id/mult"
@@ -196,12 +142,8 @@
 
     <Button
         android:id="@+id/mult"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:text="*"
-        android:textColor="#4CAF50"
-        android:textSize="25sp"
+        style="@style/OperationButtonStyle"
+        android:text="@string/mult"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/div"
         app:layout_constraintEnd_toEndOf="parent"
@@ -213,13 +155,8 @@
     <TableRow>
     <Button
         android:id="@+id/btnDot"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:onClick="onBtnDot"
-        android:text="."
-        android:textColor="#555555"
-        android:textSize="25sp"
+        style="@style/DigitButtonStyle"
+        android:text="@string/dot"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/btnClear"
         app:layout_constraintEnd_toStartOf="@+id/btn10"
@@ -229,14 +166,9 @@
         app:layout_constraintTop_toBottomOf="@+id/btn7" />
 
     <Button
-        android:id="@+id/btn10"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:onClick="onBtn0"
-        android:text="0"
-        android:textColor="#555555"
-        android:textSize="25sp"
+        android:id="@+id/btn0"
+        style="@style/DigitButtonStyle"
+        android:text="@string/n0"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/btnBack"
         app:layout_constraintEnd_toStartOf="@+id/btnPercent"
@@ -246,12 +178,8 @@
 
     <Button
         android:id="@+id/btnPercent"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:text="%"
-        android:textColor="#4CAF50"
-        android:textSize="25sp"
+        style="@style/OperationButtonStyle"
+        android:text="@string/per"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/btnNegate"
         app:layout_constraintEnd_toStartOf="@+id/div"
@@ -261,12 +189,8 @@
 
     <Button
         android:id="@+id/div"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:text="/"
-        android:textColor="#4CAF50"
-        android:textSize="25sp"
+        style="@style/OperationButtonStyle"
+        android:text="@string/div"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toTopOf="@+id/calc"
         app:layout_constraintEnd_toEndOf="parent"
@@ -278,12 +202,8 @@
     <TableRow>
     <Button
         android:id="@+id/btnClear"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:text="C"
-        android:textColor="#F44336"
-        android:textSize="25sp"
+        style="@style/GreyButtonStyle"
+        android:text="@string/clear"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnBack"
@@ -294,12 +214,8 @@
 
     <Button
         android:id="@+id/btnBack"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:text="Bs"
-        android:textColor="#F44336"
-        android:textSize="25sp"
+        style="@style/GreyButtonStyle"
+        android:text="@string/bs"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnNegate"
@@ -309,12 +225,8 @@
 
     <Button
         android:id="@+id/btnNegate"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#F1F1F1"
-        android:text="+/-"
-        android:textColor="#4CAF50"
-        android:textSize="25sp"
+        style="@style/OperationButtonStyle"
+        android:text="@string/neg"
         app:cornerRadius="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/calc"
@@ -322,19 +234,22 @@
         app:layout_constraintStart_toEndOf="@+id/btnBack"
         app:layout_constraintTop_toBottomOf="@+id/btnPercent" />
 
-    <Button
-        android:id="@+id/calc"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="#4CAF50"
-        android:text="="
-        android:textSize="25sp"
-        app:cornerRadius="90dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnNegate"
-        app:layout_constraintTop_toBottomOf="@+id/div" />
+        <Button
+            android:id="@+id/calc"
+            android:text="@string/calc"
+            android:backgroundTint="#1991FF"
+            android:fontFamily="Poppins"
+            android:textColor="#B2DAFF"
+            android:width="80dp"
+            android:height="80dp"
+            android:textSize="32sp"
+            android:gravity="center"
+            app:cornerRadius="90dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnNegate"
+            app:layout_constraintTop_toBottomOf="@+id/div" />
     </TableRow>
 
 </TableLayout>

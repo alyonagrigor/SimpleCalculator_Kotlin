@@ -3,13 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/drawable/app_background.xml" value="0.2435" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/drawable/shadow.xml" value="0.2115" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/drawable/shadow_button_layer_list.xml" value="0.2435" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout-land/activity_main.xml" value="0.21516754850088182" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout-land/button_panel.xml" value="0.21516754850088182" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout-land/button_panel_port.xml" value="0.21516754850088182" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout-land/fragment_button.xml" value="0.21516754850088182" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout-land/fragment_journal.xml" value="0.21516754850088182" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout/activity_button.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout/activity_main.xml" value="0.22509057971014493" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout/button.xml" value="1.0" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout/button_panel.xml" value="0.21014492753623187" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout/button_panel_land.xml" value="0.22509057971014493" />
-        <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout/button_panel_port.xml" value="0.22509057971014493" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout/button_panel_port.xml" value="0.264" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout/button_panel_port2.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout/button_panel_port3.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout/fragment_button.xml" value="0.22509057971014493" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/CalculatorFragment/app/src/main/res/layout/fragment_journal.xml" value="0.25416666666666665" />
       </map>

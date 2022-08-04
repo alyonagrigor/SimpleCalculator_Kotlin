@@ -4,36 +4,128 @@ import static java.lang.Character.isDigit;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-/* Что сделать:
-1. Настроить передачу данных между фрагментами
-2. доделать бекспейс
-3. потестировать верстку кнопок на разных размерах
-4. проверить сколько разрядов числа можно ввести и вывести в строку
-5. // Сохранение состояния в parcelable доделать - доб. булевыы переменные и историю
-6. что сделать с лишней кнопкой в гориз. ориентации
-7. если есть только num1 и оператор, то num2=num1 ????
-8. если num1 сразу отрицательное число то что ?????
-9. 2 ошибка в проентацх
-10. поменять кнопки местами, убрать С и ВС подальше от пальцев
-11. Сделать верстку для больших экранов
-12. крашится на кнопке негейт
+
+import com.example.calculatorfragment.databinding.FragmentButtonBinding;
+/*
+
+ДОКУМЕНТАЦИЯ
+1. Структура приложения.
+Приложение состоит из одной активити и двух фрагментов: ButtonFragment и JournalFragment. В горизонтальной
+ориентации JournalFragment находится слева и занимает примерно половину экрана, в портретной
+ориентации находится сверху. Фрагменты взамодействуют с помощью интерфейса
+OnFragmentSendDataListener.
+Во фрагменте ButtonFragment layout с кнопками создан в отдельном xml файле button_panel и подключен
+через include.
+
+2. Функционал приложения.
+2.1. Для хранения информации о состоянии приложения используются переменные:
+String sInput - используется для хранения числа, которое в данный момент вводит пользователь. Может
+содержать только цифры или минус для отрицательного числа. Одновременно нажимаемые пользователем
+цифры выводятся в текстовое поле EditText input.
+String sHistory - используется для хранения и вывода истории, включая цифры, арифметические действия,
+проценты и минус для отрицательного числа.
+String operator используется для хранения последней заданной пользователем операции (только 4 арифметические
+операции в виде строки "+").
+Boolean hasNum1 - изначально false, присваивается true, если пользователь уже ввел хотя бы одно число
+и нажал после него кнопку с арифметической операцией, то есть num1 - левый операнд для первой операции.
+Boolean isLastPressedOperation - принимает значение true, если последняя нажатая кнопка - одна из
+четырех основных арифметических операций.
+Float num1 - первое введенное число или результат предыдущих операций, то есть левый операнд.
+Float num2 - число, считанное из строки sInput, то есть правый операнд.
+
+2.2. При нажатии кнопок с цифрами вызывается метод enterDigit(), который принимает аргумент типа
+Integer - собственно цифра, которую нажал пользователь. В методе происходит:
+1. Цифра записывается в строку истории sHistory.
+2. Цифра записывается в строку для вывода sInput.
+3. Цифра выводится в строке для вывода.
+4. Булевой переменной isLastPressedOperation присваивается значение false.
+
+2.3. При нажатии кнопки "Точка" btnDot происходят 4 действия, аналогичные п. 2.2.
+
+2.4. При нажатии кнопок с арифметическими операциями +, -, *, / слушатели вызывают метод
+MainOperation(), в который передается аргумент - строка, отображающая соответствующий символ,
+например, "+". После выполнения MainOperation() переменной isLastPressedOperation присваивается true.
+MainOperation() выполняет действия:
+0. Проверяет, были ли введены какие-то цифры, иначе выдает подсказку "Введите число".
+1. Проверяет, не была ли нажата другая кнопка с арифметической операцией до этой.
+2. Если да, то перезаписывает строку operator, заменяя на новую арифметическую операцию.
+2.5. Если нет, то записывает новую операцию в строку operator.
+3. Записывает знак арифметической операции в строку sHistory.
+4. Отправляет sHistory во фрагмент JournalFragment.
+5. Сохраняет число из строки sInput в float num1 (если это первое вводимое число).
+6. Проверяет, были ли введены ранее 1 или больше чисел, записан ли какой-то знак в operator.
+7. Вызывает метод operationCalc() в случае, если кнопка арифметической операции должна сработать
+как кнопка "=", то есть уже были введены 2 или больше числа и операторы +, -, *, / между ними.
+
+2.5. Метод operationCalc() получает аргумент - строку sign из метода MainOperation() или других
+методов, а затем:
+1. Считывает num2 из строки sInput.
+2. Выполняет соответствующие арифметические операции с числами num1 и num2.
+3. Полученное значение перезаписывается в num1 и выводится на экран, num2 обнуляется.
+4. Метод output() выводит число в поле EditText input, а также удаляет .0 если получилось целое число.
+5. При делении на ноль метод clearAll() обнуляет все переменные состояния, а также вызывает метод clearHistory(),
+который очищает историю.
+
+2.6. Метод clearAll() также вызывается при нажатии на кнопку "С" (вместе с методом clearHistory()
+соответственно).
+
+2.7. При нажатии кнопки "=" вызывается метод operationCalc(), после его выполнения:
+1. Последнее введенное число записывается в sHistory.
+2. sHistory отправляется во фрагмент JournalFragment.
+3. Строка operator обнуляется.
+4. Значение isLastPressedOperation = false.
+
+2.8. Кнопка "%" вызывает метод operationPercent(), которые проверяет состояние приложения и
+запускает 1 из 4 сценариев.
+1. Если еще не было введено ни одного числа, появляется сообщение с просьбой ввести число.
+2. Если было введено только 1 число и не нажата арифметическая операция, то рассчитывается 1% от
+числа.
+3. Если имеются 2 операнда и 1 оператор, то срабатывает стандартный функционал.
+4. Если есть 1 операнд и нажата арифметическая операция, то появляется сообщение с просьбой
+ввести второе число.
+
+2.9. Для работы кнопки "Backspace" используется булева переменная isBSAvailable  - она
+перезаписывается как true, если была нажата кнопка с числом или точкой, и перезаписывается как false
+если была нажата любая другая кнопка.
+Кнопка "Backspace" срабатываем при условии что isBSAvailable  == true и запускает 1 из 4 сценариев:
+1. Если в строке sInput > 2 символов, то последняя цифра удаляется из этой строки и из sHistory.
+2. Если в строке sInput 2 символа и первый из них не '-', то аналогично.
+3. Если в строке sInput 1 символ, то она заменяется в строке sInput на ноль, удаляется из sHistory
+ и isLastPressedDigit присваивается false (т.к. больше удалять ничего).
+4. Если в строке sInput одна цифра и минус, то заменяется в строке sInput на ноль, удаляется из
+sHistory и isBSAvailable присваивается false (т.к. больше удалять ничего).
+Если последней нажатой кнопкой была арифметическая операция, =, % или negate, то isBSAvailable
+присвоено значение false, и никакие действия не выполняются.
+
+2.10. Смена знака числа осуществляется 2 способами: нажатие на "-" прежде чем введены какие-то
+числа, нажатие на кнопку Negate. При нажатии на Negate проверяется состояние приложения. Разные
+действия выполняются если:
+1. В данный момент в строке sInput находится первое введенное число, у которого знак минус был
+добавлен кнопкой "-".
+2. Если не была введена ни одна цифра либо последним действием нажат арифметический оператор - тогда
+появляется сообщение, что нужно ввести какое-либо число.
+3. Если в данный момент в строке sInput находится число, которое является результатом предыдущих
+вычислений. Тогда вся предыдущая история операций обнуляется.
+4. "Нормальный" случай, когда число введено и нажата кнопка Negate.
+
+
 * */
 
 public class ButtonFragment extends Fragment {
 
     public ButtonFragment() {
-        // Required empty public constructor
-    super(R.layout.fragment_button);
+        super(R.layout.fragment_button);
     }
 
     interface OnFragmentSendDataListener {
@@ -51,24 +143,22 @@ public class ButtonFragment extends Fragment {
         }
     }
 
-
+    private FragmentButtonBinding binding;
     private OnFragmentSendDataListener fragmentSendDataListener;
     Button btnAdd, btnSub, btnMult, btnCalc, btnDiv, btnClear, btnDot, btnNegate, btnBack,
             btnPercent, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0;
-    EditText input;
-    TextView history; //поле для отображения истории
+    EditText editTextInput;
     String sHistory = ""; //строка для сохранения истории
-    String sF = ""; //служебная строка для обрезания .0 при выводе целого числа
-    String last = ""; //служебная строка для операции negate
     String operator = ""; //строка, которая хранит последнюю нажатую юзером операцию, только 4
     // основные операции +, -, *, /
     String sInput = ""; //строка для хранения числа, которое сейчас вводит пользователь
     float num1 = 0; //число, которое сейчас вводит пользователь
     float num2 = 0; // результат выполненных операций
     boolean hasNum1 = false; //булева для проверки num1, проверяет что это не первое введенное число в цепочке операций
-    boolean isLastPressedOperation = false; //для контроля нажатия кнопок разных операций подряд,
+    boolean isLastPressedOperation = false; //для контроля нажатия кнопок разных операций,
     //true только после нажатия 4 основных операций +-*/
-    boolean isLastPressedDigit = false; //для того, чтобы стереть цифру бекспейсом
+    boolean isBSAvailable = false; //для контроля нажатия кнопок цифр
+    private static final String TAG = "myLogs";
 
     //переменные для сохранения состояния
     final static String sHistoryKey = "sHistoryKey";
@@ -78,7 +168,6 @@ public class ButtonFragment extends Fragment {
     final static String num2Key = "num2Key";
     final static String hasNum1Key = "hasNum1Key";
     final static String isLastPressedOperationKey = "isLastPressedOperationKey";
-    final static String isLastPressedDigitKey = "isLastPressedDigitKey";
 
 
     @Override
@@ -87,10 +176,11 @@ public class ButtonFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container,
-                                  Bundle savedInstanceState){
-            // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_button, container, false);
+    public View onCreateView (LayoutInflater inflater,
+                              ViewGroup container,
+                              Bundle savedInstanceState) {
+        binding = FragmentButtonBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
         if (savedInstanceState != null) {
             sHistory = savedInstanceState.getString(sHistoryKey);
             operator = savedInstanceState.getString(operatorKey);
@@ -99,16 +189,14 @@ public class ButtonFragment extends Fragment {
             num2 = savedInstanceState.getFloat(num2Key);
             hasNum1 = savedInstanceState.getBoolean(hasNum1Key);
             isLastPressedOperation = savedInstanceState.getBoolean(isLastPressedOperationKey);
-            isLastPressedDigit = savedInstanceState.getBoolean(isLastPressedDigitKey);
         }
         return view;
-        }
+    }
 
         public void onViewCreated (@NonNull View view, @Nullable Bundle savedInstanceState){
             super.onViewCreated(view, savedInstanceState);
-
-            input = view.findViewById(R.id.input);
-            history = view.findViewById(R.id.history);
+            //получаем view
+            editTextInput = view.findViewById(R.id.input);
             btnAdd = view.findViewById(R.id.add);
             btnSub = view.findViewById(R.id.sub);
             btnMult = view.findViewById(R.id.mult);
@@ -123,7 +211,7 @@ public class ButtonFragment extends Fragment {
             btn7 = view.findViewById(R.id.btn7);
             btn8 = view.findViewById(R.id.btn8);
             btn9 = view.findViewById(R.id.btn9);
-            btn0 = view.findViewById(R.id.btn10);
+            btn0 = view.findViewById(R.id.btn0);
             btnClear = view.findViewById(R.id.btnClear);
             btnDot = view.findViewById(R.id.btnDot);
             btnNegate = view.findViewById(R.id.btnNegate);
@@ -131,9 +219,7 @@ public class ButtonFragment extends Fragment {
             btnPercent = view.findViewById(R.id.btnPercent);
 
             //выводим пустые строки
-            input.setText(sInput);
-            history.setText(sHistory);
-            history.setVisibility(View.GONE);
+            binding.input.setText(sInput);
             fragmentSendDataListener.onSendData(sHistory);
 
             //определяем слушатели для действий
@@ -141,7 +227,7 @@ public class ButtonFragment extends Fragment {
                 public void onClick(View v) {
                     MainOperation("+");
                     isLastPressedOperation = true;
-                    isLastPressedDigit = false;
+                    isBSAvailable = false;
                 }
             });
 
@@ -149,15 +235,22 @@ public class ButtonFragment extends Fragment {
                 public void onClick(View v) {
                     MainOperation("*");
                     isLastPressedOperation = true;
-                    isLastPressedDigit = false;
+                    isBSAvailable = false;
                 }
             });
 
             btnSub.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    MainOperation("-");
-                    isLastPressedOperation = true;
-                    isLastPressedDigit = false;
+                    if (!hasNum1 && sInput.equals("")) {
+                        sInput = "-";
+                        editTextInput.setText(sInput);
+                        sHistory = "-";
+                        fragmentSendDataListener.onSendData(sHistory);
+                    } else {
+                        MainOperation("-");
+                        isLastPressedOperation = true;
+                        isBSAvailable = false;
+                    }
                 }
             });
 
@@ -165,19 +258,29 @@ public class ButtonFragment extends Fragment {
                 public void onClick(View v) {
                     MainOperation("/");
                     isLastPressedOperation = true;
-                    isLastPressedDigit = false;
+                    isBSAvailable = false;
                 }
             });
 
             //кнопка равно
             btnCalc.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    operationCalc();
-                    history.setText(sHistory);
-                    fragmentSendDataListener.onSendData(sHistory);//выводим историю, включая последнее число, но без оператора
-                    operator = ""; // обнуляем
-                    isLastPressedOperation = false;
-                    isLastPressedDigit = false;
+                    if (!hasNum1 && sInput.equals("") && operator.equals("")) {
+                        showToastFirstDigit(); //если еще ничего не введено
+                    } else if (hasNum1 && sInput.equals("") && !operator.equals("")) {
+                        showToastNextDigit(); //если есть результат предыдущих операций
+                        //и арифм.оператор, но нет правого операнда
+                    } else if (hasNum1 && sInput.equals("") && operator.equals("")) {
+                        showToastNextDigit(); //если есть результат предыдущих операций, но нет
+                        //правого операнда и арифм.оператора
+                    } else {
+                        operationCalc();
+                        //выводим историю, включая последнее число, но без оператора
+                        fragmentSendDataListener.onSendData(sHistory);
+                        operator = "";
+                        isLastPressedOperation = false;
+                        isBSAvailable = false;
+                    }
                 }
             });
 
@@ -191,32 +294,87 @@ public class ButtonFragment extends Fragment {
             //кнопка отрицательное/положительное число
             btnNegate.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (sInput.charAt(0) != '-') {
-                        sInput = "-" + sInput;
-                    } else {
-                        sInput = sInput.substring(1);
+                    if (!hasNum1 && sInput.equals("") //если еще не была введена ни одна цифра
+                            || isLastPressedOperation) {
+                        //или если нажат арифметический оператор, а новый операнд не введен
+                        showToastNextDigit();
+
+                    } else if (!hasNum1 && !sInput.equals("") && sInput.charAt(0) == '-'
+                            && operator.equals("")) {
+                        //если негейт нажимают когда ввели первое число с минусом
+                        sHistory = ""; //стираем число из строки sHistory
+                        sInput = sInput.substring(1); //обрезаем минус в строке sInput
+                        sHistory = sInput; //и вставляем снова в sHistory
+                        fragmentSendDataListener.onSendData(sHistory);
+
+                    } else if (!hasNum1 && !sInput.equals("") && sInput.charAt(0) != '-'
+                            && operator.equals("")) {
+                        //если негейт нажимают когда ввели первое число положительное
+                        sHistory = ""; //стираем число из строки sHistory
+                        sInput = "-" + sInput; //добавляем минус в строке sInput
+                        sHistory = sInput; //и вставляем снова в sHistory
+                        fragmentSendDataListener.onSendData(sHistory);
+
+                    } else if (hasNum1 && sInput.equals("")
+                            && !editTextInput.getText().toString().equals("")) {
+                        //если введенное в строке число - результат предыдущих вычислений
+                        sInput = editTextInput.getText().toString(); //получаем значение из текстового поля
+                        //т.к. цепочка вычислений перезатирается, перезаписываем sHistory
+                        if (sInput.charAt(0) != '-') {
+                            sInput = "-" + sInput; //добавляем минус в строке sInput
+                            sHistory = "(" + sInput + ")"; //и вставляем в sHistory вместе
+                            // с минусом и добавляем скобки
+                        } else {
+                            sInput = sInput.substring(1); //обрезаем минус в строке sInput
+                            sHistory = sInput; //и вставляем снова в sHistory
+                        }
+                        fragmentSendDataListener.onSendData(sHistory);
+                        operator = "";
+                        hasNum1 = false;
+
+                    } else if (!sInput.equals("") && sInput.charAt(0) != '-' && !operator.equals("")) {
+                        int x = sHistory.lastIndexOf(sInput); //получаем индекс, чтобы обрезать текущее число
+                        sHistory = sHistory.substring(0, x); //обрезаем
+                        sInput = "-" + sInput; //добавляем минус в строке sInput
+                        sHistory = sHistory + "(" + sInput + ")"; //и вставляем снова в sHistory вместе
+                        // с минусом и добавляем скобки
+                        fragmentSendDataListener.onSendData(sHistory);
+
+                    } else if (!sInput.equals("") && sInput.charAt(0) == '-' && !operator.equals("")) {
+                        int x = sHistory.lastIndexOf(sInput);
+                        sHistory = sHistory.substring(0, x - 1); //обрезаем число с минусом и скобками
+                        sInput = sInput.substring(1); //обрезаем минус в строке sInput
+                        sHistory = sHistory + sInput;
+                        //и вставляем снова в sHistory, из которой вырезаем скобки
+                        fragmentSendDataListener.onSendData(sHistory);
                     }
-                    input.setText(sInput);
-                    negateInHistory();
+
+                    editTextInput.setText(sInput);
                     isLastPressedOperation = false;
-                    isLastPressedDigit = false;
+                    isBSAvailable = false;
                 }
             });
 
             //кнопка Backspace
             btnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (isLastPressedDigit) {
-                        //ломается если в input только одна цифра
-                        if (sInput.length() == 1) {
-                            sInput = "";
-                            input.setText(sInput);
-                        } else {
-                            sInput = sInput.substring(0, sInput.length() - 1);
-                            input.setText(sInput);
-                        }
-                        sHistory = sHistory.substring(0, sInput.length() - 1);
+                    if (isBSAvailable && sInput.length() > 2) {
+                        sInput = sInput.substring(0, sInput.length() - 1);
+                        sHistory = sHistory.substring(0, sHistory.length() - 1);
+                    } else if (isBSAvailable && sInput.length() == 2 && sInput.charAt(0) != '-') {
+                        sInput = sInput.substring(0, 1);
+                        sHistory = sHistory.substring(0, sHistory.length() - 1);
+                    } else if (isBSAvailable && sInput.length() == 2 && sInput.charAt(0) == '-') {
+                        sInput = "0";
+                        sHistory = sHistory.substring(0, sHistory.length() - 2);
+                        isBSAvailable = false;
+                    } else if (isBSAvailable && sInput.length() == 1) {
+                        sInput = "0";
+                        sHistory = sHistory.substring(0, sHistory.length() - 1);
+                        isBSAvailable = false;
                     }
+                    editTextInput.setText(sInput);
+                    fragmentSendDataListener.onSendData(sHistory);
                 }
             });
 
@@ -229,9 +387,7 @@ public class ButtonFragment extends Fragment {
             /* НАЧАЛО добавляем слушатели для цифр*/
             btn1.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    enterDigit(1);
-                }
+                public void onClick(View view) { enterDigit(1); }
             });
             btn2.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -292,61 +448,77 @@ public class ButtonFragment extends Fragment {
                 public void onClick(View view) {
                     sHistory = sHistory + ".";
                     sInput = sInput + "."; //записывается в строке для инпута
-                    input.setText(sInput); //выводится на экран
+                    editTextInput.setText(sInput); //выводится на экран
                     isLastPressedOperation = false;
-                    isLastPressedDigit = true;
+                    isBSAvailable = true;
                 }
             });
             /* КОНЕЦ слушатели для цифр*/
-
         } /* КОНЕЦ ONVIEWCREATED*/
 
     // методы для операций
 
-        public void operationPercent () { // проверяем состояние программы при нажатии,
-            // срабатывает только если уже введен 1 оператор и 2 операнда
+        public void operationPercent () {
 
-            if (!hasNum1 && !sInput.equals("") && operator.equals("") ||
-                    hasNum1 && !sInput.equals("") && !operator.equals("") && isLastPressedOperation) { //если введено только 1 число,
-                //либо введено 1 число и оператор, но 2-е число не введено - то нажатие на % обнуляет все состояние
-                //!!! 2-е условие не срабатывает
-                clearAll();
-            }
+            if (!hasNum1 && sInput.equals("") && operator.equals("")) {
+                showToastFirstDigit(); // если не введено ни одно число и не нажата ни одна арифметическая операция
 
-            if (hasNum1 && !sInput.equals("") && !operator.equals("") && !isLastPressedOperation) {
-                //если уже введен 1 оператор и 1 операнда, то выдает процент от num2 и перезаписывает
-                // его, но не выполняет то, что записано в операторе
+            } else if (!hasNum1 && !sInput.equals("") && operator.equals("")) {
+                //если введено только 1 число, а кнопка арифметической операции не нажата, то рассчитать 1 процент
+                num1 = Float.parseFloat(sInput);
+                sHistory = sInput + " / 100"; //записываем первое число в историю и указываем, что мы рассчитали 1%
+                fragmentSendDataListener.onSendData(sHistory);
+                num2 = num1 / 100;
+                cutZeroOutput(num2); //обрезаем ноль, если нужно, и выводим в строке input, num2 при этом не изменяется
+                isLastPressedOperation = false;
+                isBSAvailable = false;
+                sInput = Float.toString(num2); //передаем результат в sInput и num1 и обнуляем num2
+                num1 = num2;
+                num2 = 0;
+
+            } else if (hasNum1 && sInput.equals("") && !operator.equals("") && isLastPressedOperation) {
+                //если введено 1 числ
+                // о и оператор, но 2-е число не введено - то выводим подсказку
+                showToastNextDigit();
+
+            } else if (hasNum1 && !sInput.equals("") && !operator.equals("") && !isLastPressedOperation) {
+                //заданы 2 операнда и арифметическая операция в operator - рассчитываем num2 процентов от num1
                 num2 = Float.parseFloat(sInput);
-                sHistory = sHistory.substring(0, sHistory.length() - sInput.length()); //стираем num2
-                // из строки памяти, т.к. оно будет изменено;
-                num2 = num1 * num2 / 100;
-                cutZero(num2);
-                input.setText(String.valueOf(num2));
-                sHistory = sHistory + num2; //записываем в строку памяти полученное значение
-                history.setText(sHistory);
+                Log.d(TAG, "num1 = " + num1);
+                Log.d(TAG, "num2 = " + num2);
+                //сначала вычисляем num2 процентов от num1 и перезаписываем num2
+                num2 = num1 / 100 * num2;
+                sInput = Float.toString(num2);
+                Log.d(TAG, "промежуточный num2 = " + num2);
+                operationCalc(); //выполняем заданную арифм. операцию
+                Log.d(TAG, "num1 = " + num1);
+                sHistory = sHistory + "%"; //записываем в строку памяти знак процента
                 fragmentSendDataListener.onSendData(sHistory);
                 isLastPressedOperation = false;
-                isLastPressedDigit = false;
-            /* не нужно обнулять, чтобы можно было повторно выполнить это жейтвие, но пока это не работает
-            operator = ""; //обнуляем строку оператор, т.к. действие из нее выполнено
-            sInput = ""; //обнуляем строку для ввода нового числа*/
+                isBSAvailable = false;
+                sInput = "";
+                operator = "";
+                num2 = 0;
             }
-
         }
 
         public void MainOperation (String sign){
 
             if (!isLastPressedOperation) {
 
+                if (!hasNum1 && sInput.equals("") && operator.equals("")) {
+                    showToastFirstDigit();
+                }
+
                 if (!hasNum1 && !sInput.equals("") && operator.equals("")) { //если в строке записано 1 число,
                     // но оператор еще не записан
                     operator = sign; //записываем в текущий оператор
                     sHistory = sHistory + operator; //записываем в историю
-                    history.setText(sHistory);//выводим в поле с историей
-                    fragmentSendDataListener.onSendData(sHistory);
+                    fragmentSendDataListener.onSendData(sHistory);//выводим в поле с историей
                     num1 = Float.parseFloat(sInput); //записываем первое введенное число в num1
                     hasNum1 = true; // num1 теперь не пустое
                     sInput = ""; // очищаем для ввода следующего операнда, но не отображаем
+                    editTextInput.setText(sInput);
                 }
 
                 if (hasNum1 && !sInput.equals("") && !operator.equals("")) { //если в строке записано 1 число,
@@ -354,14 +526,12 @@ public class ButtonFragment extends Fragment {
                     operationCalc();
                     operator = sign; //записываем в текущий оператор
                     sHistory = sHistory + operator; //записываем в историю
-                    history.setText(sHistory);//выводим в поле с историей
                     fragmentSendDataListener.onSendData(sHistory);
                 }
 
                 if (hasNum1 && sInput.equals("") && operator.equals("")) { //последующие операции после первой
                     operator = sign; //записываем в текущий оператор
                     sHistory = sHistory + operator; //записываем в историю
-                    history.setText(sHistory);//выводим в поле с историей
                     fragmentSendDataListener.onSendData(sHistory);
 
                 }
@@ -369,7 +539,6 @@ public class ButtonFragment extends Fragment {
                 operator = sign; //записываем в текущий оператор
                 sHistory = sHistory.substring(0, sHistory.length() - 1); // удаляем предыдущий оператор из истории
                 sHistory = sHistory + operator; //записываем в историю новый оператор
-                history.setText(sHistory);//выводим в поле с историей
                 fragmentSendDataListener.onSendData(sHistory);
             }
         }
@@ -381,26 +550,26 @@ public class ButtonFragment extends Fragment {
 
             if (operator.equals("+")) {
                 num1 += num2;
-                output(num1);
+                cutZeroOutput(num1);
             }
 
             if (operator.equals("-")) {
                 num1 = num1 - num2;
-                output(num1);
+                cutZeroOutput(num1);
             }
 
             if (operator.equals("*")) {
                 num1 *= num2;
-                output(num1);
+                cutZeroOutput(num1);
             }
 
             if (operator.equals("/") && num2 != 0) {
                 num1 = num1 / num2;
-                output(num1);
+                cutZeroOutput(num1);
             }
 
             if (operator.equals("/") && num2 == 0) {
-                input.setText("Error");
+                editTextInput.setText("Error");
                 //очищаем все данные
                 clearAll();
             }
@@ -410,52 +579,30 @@ public class ButtonFragment extends Fragment {
             return num1;
         }
 
-
-        public void output (float f){ // обрезаем .0 при выводе у num1, num2
-            sF = String.valueOf(f);
+        public void cutZeroOutput(float f){ // обрезаем .0 при выводе в input
+            String sF = String.valueOf(f);
             if (sF.endsWith(".0")) {
                 int x = sF.indexOf(".");
                 sF = sF.substring(0, x);
-                input.setText(sF);
+                editTextInput.setText(sF);
             } else {
-                input.setText(sF);
+                editTextInput.setText(sF);
             }
         }
-
-        public float cutZero (float f){ // обрезаем .0 без вывода
-            sF = String.valueOf(f);
-            if (sF.endsWith(".0")) {
-                int x = sF.indexOf(".");
-                sF = sF.substring(0, x);
-            }
-            num2 = Float.parseFloat(sF);
-            return num2;
-        }
-
-        public void negateInHistory () {
-            int i = sHistory.length() - 1;
-            while (isDigit(sHistory.charAt(i))) {
-                i--;
-            }
-            last = sHistory.substring(i + 1);
-            sHistory = sHistory.substring(0, i + 1);
-            sHistory = sHistory + "(-" + last + ")"; //вставляем в строку минус и кавычки для последнего введенного числа
-        }
-
 
         public void clearHistory () {
             sHistory = "";
-            history.setText(sHistory);
             fragmentSendDataListener.onSendData(sHistory);
         }
 
         public void clearAll () {
-            input.setText("");
+            editTextInput.setText("");
             num2 = 0; //обнуляем
             num1 = 0;
             hasNum1 = false;
             isLastPressedOperation = false;
-            isLastPressedDigit = false;
+            isBSAvailable = false;
+
             sInput = ""; //обнуляем
             operator = ""; // обнуляем
             clearHistory();
@@ -465,9 +612,9 @@ public class ButtonFragment extends Fragment {
         public void enterDigit (int n){
             sHistory = sHistory + n;
             sInput = sInput + n; //цифра записывается в строке для инпута
-            input.setText(sInput); // новая цифра выводится на экран
+            editTextInput.setText(sInput); // новая цифра выводится на экран
             isLastPressedOperation = false;
-            isLastPressedDigit = true;
+            isBSAvailable = true;
         }
 
     // сохранение состояния
@@ -481,8 +628,20 @@ public class ButtonFragment extends Fragment {
         outState.putFloat(num2Key, num2);
         outState.putBoolean(hasNum1Key, hasNum1);
         outState.putBoolean(isLastPressedOperationKey, isLastPressedOperation);
-        outState.putBoolean(isLastPressedDigitKey, isLastPressedDigit);
         super.onSaveInstanceState(outState);
     }
 
+    public void showToastFirstDigit() {
+        Toast.makeText(getActivity(), "Введите хотя бы одно число", Toast.LENGTH_SHORT).show();
+    }
+
+    public void showToastNextDigit() {
+        Toast.makeText(getActivity(), "Введите следующее число", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

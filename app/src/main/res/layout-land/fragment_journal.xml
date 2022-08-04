@@ -7,5 +7,7 @@
         android:id="@+id/journal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Здесь будет журнал" />
+        android:textSize="28sp"
+        android:fontFamily="Poppins"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

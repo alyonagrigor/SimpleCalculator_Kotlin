@@ -2,4 +2,26 @@
     <string name="app_name">CalculatorFragment</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enterSmth">Enter your number</string>
+    <string name="calc">=</string>
+    <string name="n1">1</string>
+    <string name="n2">2</string>
+    <string name="n3">3</string>
+    <string name="n4">4</string>
+    <string name="n5">5</string>
+    <string name="n6">6</string>
+    <string name="n7">7</string>
+    <string name="n8">8</string>
+    <string name="n9">9</string>
+    <string name="n0">0</string>
+    <string name="add">+</string>
+    <string name="sub">-</string>
+    <string name="mult">*</string>
+    <string name="div">/</string>
+    <string name="per">%</string>
+    <string name="dot">.</string>
+    <string name="neg">+/-</string>
+    <string name="bs">BS</string>
+    <string name="clear">C</string>
+
 </resources>
