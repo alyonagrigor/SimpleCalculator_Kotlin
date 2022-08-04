@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "CalculatorFragment"
 include ':app'
-include ':fragmentapp'
