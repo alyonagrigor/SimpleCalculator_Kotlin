@@ -23,7 +23,7 @@ import com.example.calculatorfragment.databinding.FragmentButtonBinding;
 1. Структура приложения.
 Приложение состоит из одной активити и двух фрагментов: ButtonFragment и JournalFragment. В горизонтальной
 ориентации JournalFragment находится слева и занимает примерно половину экрана, в портретной
-ориентации находится сверху. Фрагменты взамодействуют с помощью интерфейса
+ориентации находится сверху. Фрагменты взаимодействуют с помощью интерфейса
 OnFragmentSendDataListener.
 Во фрагменте ButtonFragment layout с кнопками создан в отдельном xml файле button_panel и подключен
 через include.
@@ -145,9 +145,6 @@ public class ButtonFragment extends Fragment {
 
     private FragmentButtonBinding binding;
     private OnFragmentSendDataListener fragmentSendDataListener;
-    Button btnAdd, btnSub, btnMult, btnCalc, btnDiv, btnClear, btnDot, btnNegate, btnBack,
-            btnPercent, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0;
-    EditText editTextInput;
     String sHistory = ""; //строка для сохранения истории
     String operator = ""; //строка, которая хранит последнюю нажатую юзером операцию, только 4
     // основные операции +, -, *, /
@@ -157,7 +154,7 @@ public class ButtonFragment extends Fragment {
     boolean hasNum1 = false; //булева для проверки num1, проверяет что это не первое введенное число в цепочке операций
     boolean isLastPressedOperation = false; //для контроля нажатия кнопок разных операций,
     //true только после нажатия 4 основных операций +-*/
-    boolean isBSAvailable = false; //для контроля нажатия кнопок цифр
+    boolean isBSAvailable = false; //для контроля возможности нажатия backspace
     private static final String TAG = "myLogs";
 
     //переменные для сохранения состояния
@@ -195,35 +192,13 @@ public class ButtonFragment extends Fragment {
 
         public void onViewCreated (@NonNull View view, @Nullable Bundle savedInstanceState){
             super.onViewCreated(view, savedInstanceState);
-            //получаем view
-            editTextInput = view.findViewById(R.id.input);
-            btnAdd = view.findViewById(R.id.add);
-            btnSub = view.findViewById(R.id.sub);
-            btnMult = view.findViewById(R.id.mult);
-            btnCalc = view.findViewById(R.id.calc);
-            btnDiv = view.findViewById(R.id.div);
-            btn1 = view.findViewById(R.id.btn1);
-            btn2 = view.findViewById(R.id.btn2);
-            btn3 = view.findViewById(R.id.btn3);
-            btn4 = view.findViewById(R.id.btn4);
-            btn5 = view.findViewById(R.id.btn5);
-            btn6 = view.findViewById(R.id.btn6);
-            btn7 = view.findViewById(R.id.btn7);
-            btn8 = view.findViewById(R.id.btn8);
-            btn9 = view.findViewById(R.id.btn9);
-            btn0 = view.findViewById(R.id.btn0);
-            btnClear = view.findViewById(R.id.btnClear);
-            btnDot = view.findViewById(R.id.btnDot);
-            btnNegate = view.findViewById(R.id.btnNegate);
-            btnBack = view.findViewById(R.id.btnBack);
-            btnPercent = view.findViewById(R.id.btnPercent);
 
             //выводим пустые строки
-            binding.input.setText(sInput);
+            binding.etInput.setText(sInput);
             fragmentSendDataListener.onSendData(sHistory);
 
             //определяем слушатели для действий
-            btnAdd.setOnClickListener(new View.OnClickListener() {
+            binding.add.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     MainOperation("+");
                     isLastPressedOperation = true;
@@ -231,7 +206,7 @@ public class ButtonFragment extends Fragment {
                 }
             });
 
-            btnMult.setOnClickListener(new View.OnClickListener() {
+            binding.mult.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     MainOperation("*");
                     isLastPressedOperation = true;
@@ -239,11 +214,11 @@ public class ButtonFragment extends Fragment {
                 }
             });
 
-            btnSub.setOnClickListener(new View.OnClickListener() {
+            binding.sub.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if (!hasNum1 && sInput.equals("")) {
                         sInput = "-";
-                        editTextInput.setText(sInput);
+                        binding.etInput.setText(sInput);
                         sHistory = "-";
                         fragmentSendDataListener.onSendData(sHistory);
                     } else {
@@ -254,7 +229,7 @@ public class ButtonFragment extends Fragment {
                 }
             });
 
-            btnDiv.setOnClickListener(new View.OnClickListener() {
+            binding.div.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     MainOperation("/");
                     isLastPressedOperation = true;
@@ -263,7 +238,7 @@ public class ButtonFragment extends Fragment {
             });
 
             //кнопка равно
-            btnCalc.setOnClickListener(new View.OnClickListener() {
+            binding.calc.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if (!hasNum1 && sInput.equals("") && operator.equals("")) {
                         showToastFirstDigit(); //если еще ничего не введено
@@ -285,14 +260,14 @@ public class ButtonFragment extends Fragment {
             });
 
             //кнопка С
-            btnClear.setOnClickListener(new View.OnClickListener() {
+            binding.btnClear.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     clearAll();
                 }
             });
 
             //кнопка отрицательное/положительное число
-            btnNegate.setOnClickListener(new View.OnClickListener() {
+            binding.btnNegate.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if (!hasNum1 && sInput.equals("") //если еще не была введена ни одна цифра
                             || isLastPressedOperation) {
@@ -316,9 +291,9 @@ public class ButtonFragment extends Fragment {
                         fragmentSendDataListener.onSendData(sHistory);
 
                     } else if (hasNum1 && sInput.equals("")
-                            && !editTextInput.getText().toString().equals("")) {
+                            && !binding.etInput.getText().toString().equals("")) {
                         //если введенное в строке число - результат предыдущих вычислений
-                        sInput = editTextInput.getText().toString(); //получаем значение из текстового поля
+                        sInput = binding.etInput.getText().toString(); //получаем значение из текстового поля
                         //т.к. цепочка вычислений перезатирается, перезаписываем sHistory
                         if (sInput.charAt(0) != '-') {
                             sInput = "-" + sInput; //добавляем минус в строке sInput
@@ -349,14 +324,14 @@ public class ButtonFragment extends Fragment {
                         fragmentSendDataListener.onSendData(sHistory);
                     }
 
-                    editTextInput.setText(sInput);
+                    binding.etInput.setText(sInput);
                     isLastPressedOperation = false;
                     isBSAvailable = false;
                 }
             });
 
             //кнопка Backspace
-            btnBack.setOnClickListener(new View.OnClickListener() {
+            binding.btnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if (isBSAvailable && sInput.length() > 2) {
                         sInput = sInput.substring(0, sInput.length() - 1);
@@ -373,82 +348,82 @@ public class ButtonFragment extends Fragment {
                         sHistory = sHistory.substring(0, sHistory.length() - 1);
                         isBSAvailable = false;
                     }
-                    editTextInput.setText(sInput);
+                    binding.etInput.setText(sInput);
                     fragmentSendDataListener.onSendData(sHistory);
                 }
             });
 
             //кнопка процент
-            btnPercent.setOnClickListener(new View.OnClickListener() {
+            binding.btnPercent.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     operationPercent();
                 }
             });
             /* НАЧАЛО добавляем слушатели для цифр*/
-            btn1.setOnClickListener(new View.OnClickListener() {
+            binding.btn1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) { enterDigit(1); }
             });
-            btn2.setOnClickListener(new View.OnClickListener() {
+            binding.btn2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterDigit(2);
                 }
             });
-            btn3.setOnClickListener(new View.OnClickListener() {
+            binding.btn3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterDigit(3);
                 }
             });
-            btn4.setOnClickListener(new View.OnClickListener() {
+            binding.btn4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterDigit(4);
                 }
             });
-            btn5.setOnClickListener(new View.OnClickListener() {
+            binding.btn5.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterDigit(5);
                 }
             });
-            btn6.setOnClickListener(new View.OnClickListener() {
+            binding.btn6.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterDigit(6);
                 }
             });
-            btn7.setOnClickListener(new View.OnClickListener() {
+            binding.btn7.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterDigit(7);
                 }
             });
-            btn8.setOnClickListener(new View.OnClickListener() {
+            binding.btn8.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterDigit(8);
                 }
             });
-            btn9.setOnClickListener(new View.OnClickListener() {
+            binding.btn9.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterDigit(9);
                 }
             });
-            btn0.setOnClickListener(new View.OnClickListener() {
+            binding.btn0.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterDigit(0);
                 }
             });
-            btnDot.setOnClickListener(new View.OnClickListener() {
+            binding.btnDot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     sHistory = sHistory + ".";
                     sInput = sInput + "."; //записывается в строке для инпута
-                    editTextInput.setText(sInput); //выводится на экран
+                    binding.etInput.setText(sInput); //выводится на экран
                     isLastPressedOperation = false;
                     isBSAvailable = true;
                 }
@@ -518,7 +493,7 @@ public class ButtonFragment extends Fragment {
                     num1 = Float.parseFloat(sInput); //записываем первое введенное число в num1
                     hasNum1 = true; // num1 теперь не пустое
                     sInput = ""; // очищаем для ввода следующего операнда, но не отображаем
-                    editTextInput.setText(sInput);
+                    binding.etInput.setText(sInput);
                 }
 
                 if (hasNum1 && !sInput.equals("") && !operator.equals("")) { //если в строке записано 1 число,
@@ -569,7 +544,7 @@ public class ButtonFragment extends Fragment {
             }
 
             if (operator.equals("/") && num2 == 0) {
-                editTextInput.setText("Error");
+                binding.etInput.setText("Error");
                 //очищаем все данные
                 clearAll();
             }
@@ -584,9 +559,9 @@ public class ButtonFragment extends Fragment {
             if (sF.endsWith(".0")) {
                 int x = sF.indexOf(".");
                 sF = sF.substring(0, x);
-                editTextInput.setText(sF);
+                binding.etInput.setText(sF);
             } else {
-                editTextInput.setText(sF);
+                binding.etInput.setText(sF);
             }
         }
 
@@ -596,7 +571,7 @@ public class ButtonFragment extends Fragment {
         }
 
         public void clearAll () {
-            editTextInput.setText("");
+            binding.etInput.setText("");
             num2 = 0; //обнуляем
             num1 = 0;
             hasNum1 = false;
@@ -612,7 +587,7 @@ public class ButtonFragment extends Fragment {
         public void enterDigit (int n){
             sHistory = sHistory + n;
             sInput = sInput + n; //цифра записывается в строке для инпута
-            editTextInput.setText(sInput); // новая цифра выводится на экран
+            binding.etInput.setText(sInput); // новая цифра выводится на экран
             isLastPressedOperation = false;
             isBSAvailable = true;
         }

@@ -10,7 +10,7 @@
     tools:context=".ButtonFragment">
 
     <EditText
-        android:id="@+id/input"
+        android:id="@+id/etInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintVertical_chainStyle="spread_inside"
