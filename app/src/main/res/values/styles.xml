@@ -14,8 +14,8 @@
         <item name="android:textSize">20sp</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/button_background</item>
-        <item name="android:layout_width">50dp</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">52dp</item>
         <item name="android:fontFamily">Poppins</item>
     </style>
     <style name="OperationButtonStyle">
@@ -32,8 +32,8 @@
         <item name="android:textSize">20sp</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/operation_button_color</item>
-        <item name="android:layout_width">50dp</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">52dp</item>
         <item name="android:fontFamily">Poppins</item>
     </style>
     <style name="GreyButtonStyle">
@@ -50,8 +50,8 @@
         <item name="android:textSize">20sp</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/button_background</item>
-        <item name="android:layout_width">50dp</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">52dp</item>
         <item name="android:fontFamily">Poppins</item>
     </style>
 
