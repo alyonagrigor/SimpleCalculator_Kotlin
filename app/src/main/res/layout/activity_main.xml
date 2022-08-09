@@ -9,7 +9,7 @@
         android:id="@+id/fragment_container_view"
         android:name="com.example.calculatorfragment.JournalFragment"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/fragment_container_view2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

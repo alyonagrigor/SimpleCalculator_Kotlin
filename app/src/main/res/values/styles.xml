@@ -2,56 +2,56 @@
 <resources>
     <style name="DigitButtonStyle">
         <item name="android:textColor">@color/digit_button_text_color</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">@dimen/button_text_size_portrait</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/button_background</item>
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_width">@dimen/button_size_portrait</item>
+        <item name="android:layout_height">@dimen/button_size_portrait</item>
         <item name="android:fontFamily">Poppins</item>
     </style>
     <style name="DigitButtonLandscape">
         <item name="android:textColor">@color/digit_button_text_color</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/button_text_size_landscape</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/button_background</item>
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_width">@dimen/button_width_landscape</item>
+        <item name="android:layout_height">@dimen/button_height_landscape</item>
         <item name="android:fontFamily">Poppins</item>
     </style>
     <style name="OperationButtonStyle">
         <item name="android:textColor">@color/operation_button_text_color</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">@dimen/button_text_size_portrait</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/operation_button_color</item>
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_width">@dimen/button_size_portrait</item>
+        <item name="android:layout_height">@dimen/button_size_portrait</item>
         <item name="android:fontFamily">Poppins</item>
     </style>
     <style name="OperationButtonLandscape">
         <item name="android:textColor">@color/operation_button_text_color</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/button_text_size_landscape</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/operation_button_color</item>
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_width">@dimen/button_width_landscape</item>
+        <item name="android:layout_height">@dimen/button_height_landscape</item>
         <item name="android:fontFamily">Poppins</item>
     </style>
     <style name="GreyButtonStyle">
         <item name="android:textColor">@color/grey_button_text_color</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">@dimen/button_text_size_portrait</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/button_background</item>
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_width">@dimen/button_size_portrait</item>
+        <item name="android:layout_height">@dimen/button_size_portrait</item>
         <item name="android:fontFamily">Poppins</item>
     </style>
     <style name="GreyButtonLandscape">
         <item name="android:textColor">@color/grey_button_text_color</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/button_text_size_landscape</item>
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/button_background</item>
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_width">@dimen/button_width_landscape</item>
+        <item name="android:layout_height">@dimen/button_height_landscape</item>
         <item name="android:fontFamily">Poppins</item>
     </style>
 

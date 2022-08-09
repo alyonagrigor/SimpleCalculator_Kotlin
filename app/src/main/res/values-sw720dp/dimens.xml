@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="button_fragment_margin">32dp</dimen>
+    <dimen name="button_size_portrait">140dp</dimen>
+    <dimen name="button_width_landscape">120dp</dimen>
+    <dimen name="button_height_landscape">96dp</dimen>
+    <dimen name="button_text_size_portrait">44sp</dimen>
+    <dimen name="button_text_size_landscape">40sp</dimen>
+    <dimen name="input_text_size_portrait">56sp</dimen>
+    <dimen name="input_text_size_landscape">44sp</dimen>
+    <dimen name="journal_text_size_portrait">48sp</dimen>
+    <dimen name="journal_text_size_landscape">44sp</dimen>
+</resources>

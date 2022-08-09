@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/app_margin_portrait"
-    android:layout_marginEnd="@dimen/app_margin_portrait"
-    android:layout_marginBottom="@dimen/app_margin_portrait"
+    android:layout_marginStart="@dimen/button_fragment_margin"
+    android:layout_marginEnd="@dimen/button_fragment_margin"
+    android:layout_marginTop="@dimen/button_fragment_margin"
+    android:layout_marginBottom="@dimen/button_fragment_margin"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ButtonFragment">
 
@@ -18,7 +19,7 @@
         android:inputType="number"
         android:textAlignment="viewEnd"
         android:textColor="#555555"
-        android:textSize="24sp"
+        android:textSize="@dimen/input_text_size_portrait"
         android:fontFamily="Poppins"
         app:layout_constraintBottom_toTopOf="@+id/panel"
         app:layout_constraintTop_toTopOf="parent"
@@ -32,7 +33,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.75"
-        app:layout_constraintTop_toBottomOf="@+id/input"
+        app:layout_constraintTop_toBottomOf="@+id/etInput"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -261,7 +262,7 @@
             android:backgroundTint="#1991FF"
             android:fontFamily="Poppins"
             android:textColor="#B2DAFF"
-            android:textSize="32sp"
+            android:textSize="@dimen/button_text_size_portrait"
             android:gravity="center"
             app:cornerRadius="90dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -269,8 +270,8 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnNegate"
             app:layout_constraintTop_toBottomOf="@+id/div"
-            android:layout_height="80dp"
-            android:layout_width="80dp" />
+            android:layout_height="@dimen/button_size_portrait"
+            android:layout_width="@dimen/button_size_portrait" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
