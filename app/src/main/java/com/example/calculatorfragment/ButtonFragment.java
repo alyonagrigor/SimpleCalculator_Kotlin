@@ -580,7 +580,9 @@ public class ButtonFragment extends Fragment {
 
         if (sInput.equals("0")) { //если до этого был введен ноль в начале числа
             sInput = ""; //стираем ноль, заменяя его пустой строкой
-            sHistory = sHistory.substring(0, sHistory.length() - 1); //стираем ноль из sHistory
+            if (!sHistory.equals("")) { //проверяем, что sHistory не пустая строка
+                sHistory = sHistory.substring(0, sHistory.length() - 1); //стираем ноль из sHistory
+            }
         }
         sInput = sInput + n; //цифра записывается в строке для инпута
         sHistory = sHistory + n;
