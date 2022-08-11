@@ -155,6 +155,16 @@ public class ButtonFragment extends Fragment {
     boolean isBSAvailable = false; //для контроля возможности нажатия backspace
     private static final String TAG = "myLogs";
 
+    //переменные для сохранения состояния
+    final static String sHistoryKey= "sHistoryKey";
+    final static String operatorKey= "operatorKey";
+    final static String sInputKey= "sInputKey";
+    final static String num1Key= "num1Key";
+    final static String num2Key= "num2Key";
+    final static String hasNum1Key= "hasNum1Key";
+    final static String isLastPressedOperationKey= "isLastPressedOperationKey";
+    final static String isBSAvailableKey = "isBSAvailableKey";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -167,6 +177,16 @@ public class ButtonFragment extends Fragment {
                               Bundle savedInstanceState) {
         binding = FragmentButtonBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        if (savedInstanceState != null) {
+            sHistory = savedInstanceState.getString(sHistoryKey);
+            operator = savedInstanceState.getChar(operatorKey);
+            sInput = savedInstanceState.getString(sInputKey);
+            num1 = savedInstanceState.getFloat(num1Key);
+            num2 = savedInstanceState.getFloat(num2Key);
+            hasNum1 = savedInstanceState.getBoolean(hasNum1Key);
+            isLastPressedOperation = savedInstanceState.getBoolean(isLastPressedOperationKey);
+            isBSAvailable = savedInstanceState.getBoolean(isBSAvailableKey);
+        }
         return view;
     }
 
@@ -575,6 +595,21 @@ public class ButtonFragment extends Fragment {
 
     public void showToastNextDigit() {
         Toast.makeText(getActivity(), "Введите следующее число", Toast.LENGTH_SHORT).show();
+    }
+
+    // сохранение состояния
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        outState.putString(sHistoryKey, sHistory);
+        outState.putChar(operatorKey, operator);
+        outState.putString(sInputKey, sInput);
+        outState.putFloat(num1Key, num1);
+        outState.putFloat(num2Key, num2);
+        outState.putBoolean(hasNum1Key, hasNum1);
+        outState.putBoolean(isLastPressedOperationKey, isLastPressedOperation);
+        outState.putBoolean(isBSAvailableKey, isBSAvailable);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
