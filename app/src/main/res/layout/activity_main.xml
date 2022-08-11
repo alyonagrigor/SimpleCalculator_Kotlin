@@ -8,17 +8,20 @@
         android:id="@+id/fragment_container_view"
         android:name="com.example.calculatorfragment.JournalFragment"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_weight="0.1"
         app:layout_constraintBottom_toTopOf="@+id/fragment_container_view2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view2"
         android:name="com.example.calculatorfragment.ButtonFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintVertical_weight="0.9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
