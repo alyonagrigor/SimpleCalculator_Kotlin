@@ -32,7 +32,7 @@ OnFragmentSendDataListener.
 2.1. Для хранения информации о состоянии приложения используются переменные:
 String sInput - используется для хранения числа, которое в данный момент вводит пользователь. Может
 содержать только цифры или минус для отрицательного числа. Одновременно нажимаемые пользователем
-цифры выводятся в текстовое поле EditText input.
+цифры выводятся в текстовое поле EditText etInput..
 String sHistory - используется для хранения и вывода истории, включая цифры, арифметические действия,
 проценты и минус для отрицательного числа.
 Переменная char operator используется для хранения последней заданной пользователем операции (только 4 арифметические
@@ -41,8 +41,8 @@ Boolean hasNum1 - изначально false, присваивается true, �
 и нажал после него кнопку с арифметической операцией, то есть num1 - левый операнд для первой операции.
 Boolean isLastPressedOperation - принимает значение true, если последняя нажатая кнопка - одна из
 четырех основных арифметических операций.
-Float num1 - первое введенное число или результат предыдущих операций, то есть левый операнд.
-Float num2 - число, считанное из строки sInput, то есть правый операнд.
+Double num1 - первое введенное число или результат предыдущих операций, то есть левый операнд.
+Double num2 - число, считанное из строки sInput, то есть правый операнд, введеный в EditText etInput.
 
 2.2. При нажатии кнопок с цифрами вызывается метод enterDigit(), который принимает аргумент типа
 Integer - собственно цифра, которую нажал пользователь. В методе происходит:
@@ -63,7 +63,7 @@ MainOperation() выполняет действия:
 2.5. Если нет, то записывает новую операцию в строку operator.
 3. Записывает знак арифметической операции в строку sHistory.
 4. Отправляет sHistory во фрагмент JournalFragment.
-5. Сохраняет число из строки sInput в float num1 (если это первое вводимое число).
+5. Сохраняет число из строки sInput в double num1 (если это первое вводимое число).
 6. Проверяет, были ли введены ранее 1 или больше чисел, записан ли какой-то знак в operator.
 7. Вызывает метод operationCalc() в случае, если кнопка арифметической операции должна сработать
 как кнопка "=", то есть уже были введены 2 или больше числа и операторы +, -, *, / между ними.
@@ -147,8 +147,8 @@ public class ButtonFragment extends Fragment {
     char operator = '0'; //переменная, которая хранит последнюю нажатую юзером операцию,
     // только 4 основные операции +, -, *, / либо ноль
     String sInput = ""; //строка для хранения числа, которое сейчас вводит пользователь
-    float num1 = 0; //число, которое сейчас вводит пользователь
-    float num2 = 0; // результат выполненных операций
+    double num1 = 0; //число, которое сейчас вводит пользователь
+    double num2 = 0; // результат выполненных операций
     boolean hasNum1 = false; //булева для проверки num1, проверяет что это не первое введенное число в цепочке операций
     boolean isLastPressedOperation = false; //для контроля нажатия кнопок разных операций,
     //true только после нажатия 4 основных операций +-*/
@@ -181,8 +181,8 @@ public class ButtonFragment extends Fragment {
             sHistory = savedInstanceState.getString(sHistoryKey);
             operator = savedInstanceState.getChar(operatorKey);
             sInput = savedInstanceState.getString(sInputKey);
-            num1 = savedInstanceState.getFloat(num1Key);
-            num2 = savedInstanceState.getFloat(num2Key);
+            num1 = savedInstanceState.getDouble(num1Key);
+            num2 = savedInstanceState.getDouble(num2Key);
             hasNum1 = savedInstanceState.getBoolean(hasNum1Key);
             isLastPressedOperation = savedInstanceState.getBoolean(isLastPressedOperationKey);
             isBSAvailable = savedInstanceState.getBoolean(isBSAvailableKey);
@@ -376,7 +376,7 @@ public class ButtonFragment extends Fragment {
                 } else if (!hasNum1 && !sInput.equals("") && operator == '0') {
                     //если введено только 1 число, а кнопка арифметической операции не нажата, то
                     // рассчитать 1 процент
-                    num1 = Float.parseFloat(sInput);
+                    num1 = Double.parseDouble(sInput);
                     sHistory = sInput + "\u200b/100"; //записываем первое число в историю и указываем, что мы рассчитали 1%
                     fragmentSendDataListener.onSendData(sHistory);
                     num2 = num1 / 100;
@@ -384,7 +384,7 @@ public class ButtonFragment extends Fragment {
                     // при этом не изменяется
                     isLastPressedOperation = false;
                     isBSAvailable = false;
-                    sInput = Float.toString(num2); //передаем результат в sInput и num1 и обнуляем num2
+                    sInput = Double.toString(num2); //передаем результат в sInput и num1 и обнуляем num2
                     num1 = num2;
                     num2 = 0;
 
@@ -395,12 +395,12 @@ public class ButtonFragment extends Fragment {
 
                 } else if (hasNum1 && !sInput.equals("") && operator != '0' && !isLastPressedOperation) {
                     //заданы 2 операнда и арифметическая операция в operator - рассчитываем num2 процентов от num1
-                    num2 = Float.parseFloat(sInput);
+                    num2 = Double.parseDouble(sInput);
                     Log.d(TAG, "num1 = " + num1);
                     Log.d(TAG, "num2 = " + num2);
                     //сначала вычисляем num2 процентов от num1 и перезаписываем num2
                     num2 = num1 / 100 * num2;
-                    sInput = Float.toString(num2);
+                    sInput = Double.toString(num2);
                     Log.d(TAG, "промежуточный num2 = " + num2);
                     operationCalc(); //выполняем заданную арифм. операцию
                     Log.d(TAG, "num1 = " + num1);
@@ -483,7 +483,7 @@ public class ButtonFragment extends Fragment {
                 operator = sign; //записываем в текущий оператор
                 sHistory = sHistory + "\u200b" + operator + "\u200b"; //записываем в историю
                 fragmentSendDataListener.onSendData(sHistory);//выводим в поле с историей
-                num1 = Float.parseFloat(sInput); //записываем первое введенное число в num1
+                num1 = Double.parseDouble(sInput); //записываем первое введенное число в num1
                 hasNum1 = true; // num1 теперь не пустое
                 sInput = ""; // очищаем для ввода следующего операнда, но не отображаем
                 binding.etInput.setText(sInput);
@@ -512,8 +512,8 @@ public class ButtonFragment extends Fragment {
     }
 
     //метод выполняет основную операцию - расчет
-    public float operationCalc () {
-        num2 = Float.parseFloat(sInput); // получаем введенное число
+    public double operationCalc () {
+        num2 = Double.parseDouble(sInput); // получаем введенное число
 
         if (operator == '+') {
             num1 += num2;
@@ -546,7 +546,7 @@ public class ButtonFragment extends Fragment {
         return num1;
     }
 
-    public void cutZeroOutput(float f){ // обрезаем .0 при выводе в input
+    public void cutZeroOutput(double f){ // обрезаем .0 при выводе в input
         String sF = String.valueOf(f);
         if (sF.endsWith(".0")) {
             int x = sF.indexOf(".");
@@ -606,8 +606,8 @@ public class ButtonFragment extends Fragment {
         outState.putString(sHistoryKey, sHistory);
         outState.putChar(operatorKey, operator);
         outState.putString(sInputKey, sInput);
-        outState.putFloat(num1Key, num1);
-        outState.putFloat(num2Key, num2);
+        outState.putDouble(num1Key, num1);
+        outState.putDouble(num2Key, num2);
         outState.putBoolean(hasNum1Key, hasNum1);
         outState.putBoolean(isLastPressedOperationKey, isLastPressedOperation);
         outState.putBoolean(isBSAvailableKey, isBSAvailable);
