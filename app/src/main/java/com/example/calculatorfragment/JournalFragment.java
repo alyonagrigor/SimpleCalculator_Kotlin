@@ -18,7 +18,7 @@ public class JournalFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_journal, container, false);
     }
 
-     public void setSelectedItem(String selectedItem) {
+     public void setSelectedItem(StringBuilder selectedItem) {
             TextView journal = getView().findViewById(R.id.journal);
             journal.setText(selectedItem);
      }

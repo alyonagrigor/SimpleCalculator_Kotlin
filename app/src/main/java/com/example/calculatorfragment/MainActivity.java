@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements ButtonFragment.On
     }
 
     @Override
-    public void onSendData(String selectedItem) {
+    public void onSendData(StringBuilder selectedItem) {
         JournalFragment fragment = (JournalFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_container_view);
         if (fragment != null)
