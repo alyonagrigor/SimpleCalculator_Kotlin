@@ -1,7 +1,5 @@
 package com.example.calculatorfragment;
 
-import static java.lang.Character.isDigit;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -145,8 +143,8 @@ public class ButtonFragment extends Fragment {
     char operator = '0'; //переменная, которая хранит последнюю нажатую юзером операцию,
     // только 4 основные операции +, -, *, / либо ноль
     String sInput = ""; //строка для хранения числа, которое сейчас вводит пользователь
-    double num1 = 0; //число, которое сейчас вводит пользователь
-    double num2 = 0; // результат выполненных операций
+    double num2 = 0; //число, которое сейчас вводит пользователь
+    double num1 = 0; // результат выполненных операций
     boolean hasNum1 = false; //булева для проверки num1, проверяет что это не первое введенное число в цепочке операций
     boolean isLastPressedOperation = false; //для контроля нажатия кнопок разных операций,
     //true только после нажатия 4 основных операций +-*/
