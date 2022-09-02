@@ -5,14 +5,15 @@
     android:layout_height="match_parent"
     android:layout_marginStart="@dimen/button_fragment_margin"
     android:layout_marginEnd="@dimen/button_fragment_margin"
-    tools:context=".JournalFragment">
+    tools:context=".JournalFragment"
+    tools:viewBindingIgnore="true">
 
     <TextView
         android:id="@+id/journal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:lines="2"
         android:fontFamily="Poppins"
+        android:lines="2"
         android:textAlignment="viewEnd"
         android:textSize="@dimen/journal_text_size_portrait" />
 

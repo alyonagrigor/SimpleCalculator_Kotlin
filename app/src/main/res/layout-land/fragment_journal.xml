@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginStart="@dimen/button_fragment_margin"
+    android:layout_marginTop="@dimen/button_fragment_margin"
     android:layout_marginBottom="@dimen/button_fragment_margin"
-    android:layout_marginTop="@dimen/button_fragment_margin">
+    tools:viewBindingIgnore="true">
 
     <TextView
         android:id="@+id/journal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="@dimen/journal_text_size_landscape"
-        android:fontFamily="Poppins"/>
+        android:fontFamily="Poppins"
+        android:textSize="@dimen/journal_text_size_landscape" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
