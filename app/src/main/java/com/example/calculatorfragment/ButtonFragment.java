@@ -498,15 +498,13 @@ public class ButtonFragment extends Fragment {
     }
 
     // обрезаем .0 при выводе в input
-    public void cutZeroOutput(double f){
-        String sF = String.valueOf(f);
-        if (sF.endsWith(".0")) {
-            int x = sF.indexOf(".");
-            sF = sF.substring(0, x);
-            binding.etInput.setText(sF);
-        } else {
-            binding.etInput.setText(sF);
+    public void cutZeroOutput(double d){
+        String sD= String.valueOf(d);
+        if (sD.endsWith(".0")) {
+            int x = sD.indexOf(".");
+            sD = sD.substring(0, x);
         }
+        binding.etInput.setText(sD);
     }
 
     public void clearHistory () {
