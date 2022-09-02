@@ -13,11 +13,6 @@ public class MainActivity extends AppCompatActivity implements ButtonFragment.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int displayWidth =  metrics.widthPixels;
-        int displayHeight =  metrics.heightPixels;
     }
 
     @Override
