@@ -20,4 +20,5 @@
     <string name="neg">+/-</string>
     <string name="bs">BS</string>
     <string name="clear">C</string>
+    <string name="error">Error</string>
 </resources>
