@@ -528,11 +528,9 @@ public class ButtonFragment extends Fragment {
     //метод, вызываемый при нажатии кнопки с цифрой
     public void enterDigit (int n){
 
-        if (sInput.equals("0")) {
+        if (sInput.equals("0") && !sbHistory.toString().equals("")) {
             sInput = "";
-            if (!sbHistory.toString().equals("")) {
-                sbHistory.deleteCharAt(sbHistory.length() - 1);
-            }
+            sbHistory.deleteCharAt(sbHistory.length() - 1);
         }
         sInput = sInput + n;
         sbHistory.append(n);
