@@ -468,29 +468,31 @@ public class ButtonFragment extends Fragment {
     public void operationCalc () {
         num2 = Double.parseDouble(sInput); // получаем введенное число
 
-        if (operator == '+') {
-            num1 += num2;
-            cutZeroOutput(num1);
-        }
+        switch (operator) {
+            case ('+'):
+                num1 += num2;
+                cutZeroOutput(num1);
+                break;
 
-        if (operator == '-') {
-            num1 = num1 - num2;
-            cutZeroOutput(num1);
-        }
+            case ('-'):
+                num1 = num1 - num2;
+                cutZeroOutput(num1);
+                break;
 
-        if (operator == '*') {
-            num1 *= num2;
-            cutZeroOutput(num1);
-        }
+            case ('*'):
+                num1 *= num2;
+                cutZeroOutput(num1);
+                break;
 
-        if (operator == '/' && num2 != 0) {
-            num1 = num1 / num2;
-            cutZeroOutput(num1);
-        }
-
-        if (operator == '/' && num2 == 0) {
-            binding.etInput.setText(R.string.error);
-            clearAll();
+            case ('/'):
+                if (num2 != 0) {
+                    num1 = num1 / num2;
+                    cutZeroOutput(num1);
+                } else {
+                    binding.etInput.setText(R.string.error);
+                    clearAll();
+                }
+                break;
         }
 
         num2 = 0;
@@ -527,11 +529,12 @@ public class ButtonFragment extends Fragment {
 
     //метод, вызываемый при нажатии кнопки с цифрой
     public void enterDigit (int n){
-
+        //если первая введенная цифра в числе 0, то убираем его
         if (sInput.equals("0") && !sbHistory.toString().equals("")) {
             sInput = "";
             sbHistory.deleteCharAt(sbHistory.length() - 1);
         }
+
         sInput = sInput + n;
         sbHistory.append(n);
         binding.etInput.setText(sInput);
