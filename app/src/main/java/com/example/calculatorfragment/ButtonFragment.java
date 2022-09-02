@@ -72,11 +72,9 @@ MainOperation() выполняет действия:
 2. Выполняет соответствующие арифметические операции с числами num1 и num2.
 3. Полученное значение перезаписывается в num1 и выводится на экран, num2 обнуляется.
 4. Метод output() выводит число в поле EditText input, а также удаляет .0 если получилось целое число.
-5. При делении на ноль метод clearAll() обнуляет все переменные состояния, а также вызывает метод clearHistory(),
-который очищает историю.
+5. При делении на ноль метод clearAll() обнуляет все переменные состояния, а также очищает историю.
 
-2.6. Метод clearAll() также вызывается при нажатии на кнопку "С" (вместе с методом clearHistory()
-соответственно).
+2.6. Метод clearAll() также вызывается при нажатии на кнопку "С".
 
 2.7. При нажатии кнопки "=" вызывается метод operationCalc(), после его выполнения:
 1. Последнее введенное число записывается в sbHistory.
@@ -493,6 +491,11 @@ public class ButtonFragment extends Fragment {
                     clearAll();
                 }
                 break;
+
+            case ('0'):
+                binding.etInput.setText(R.string.error);
+                clearAll();
+                break;
         }
 
         num2 = 0;
@@ -509,12 +512,6 @@ public class ButtonFragment extends Fragment {
         binding.etInput.setText(sD);
     }
 
-    public void clearHistory () {
-        sbHistory.delete(0, sbHistory.length());
-        sHistory = "";
-        fragmentSendDataListener.onSendData(sbHistory);
-    }
-
     public void clearAll () {
         binding.etInput.setText("");
         num2 = 0;
@@ -524,7 +521,9 @@ public class ButtonFragment extends Fragment {
         isBSAvailable = false;
         sInput = "";
         operator = '0';
-        clearHistory();
+        sbHistory.delete(0, sbHistory.length());
+        sHistory = "";
+        fragmentSendDataListener.onSendData(sbHistory);
     }
 
     //метод, вызываемый при нажатии кнопки с цифрой
