@@ -271,7 +271,7 @@ public class ButtonFragment extends Fragment {
         });
     }
 
-    public void MainOperation (char sign){
+    public void MainOperation (char sign) {
 
         if (!hasNum1 && sInput.equals("")) {
             showToastFirstDigit();
@@ -304,42 +304,34 @@ public class ButtonFragment extends Fragment {
     }
 
     //метод выполняет основную операцию - расчет
-    public void operationCalc () {
+    public void operationCalc() {
         num2 = Double.parseDouble(sInput); // получаем введенное число
 
         switch (operator) {
             case ('+'):
                 num1 += num2;
-                cutZeroOutput(num1);
                 break;
 
             case ('-'):
                 num1 = num1 - num2;
-                cutZeroOutput(num1);
                 break;
 
             case ('*'):
                 num1 *= num2;
-                cutZeroOutput(num1);
                 break;
 
             case ('/'):
-                if (num2 != 0) {
-                    num1 = num1 / num2;
-                    cutZeroOutput(num1);
-                } else {
-                    binding.etInput.setText(R.string.error);
-                    clearAll();
-                }
-                break;
+                 num1 = num1 / num2;
+                 break;
         }
 
+        cutZeroOutput(num1);
         num2 = 0;
         sInput = "";
     }
 
     // обрезаем .0 при выводе в input
-    public void cutZeroOutput(double d){
+    public void cutZeroOutput (double d){
         String sD= String.valueOf(d);
         if (sD.endsWith(".0")) {
             int x = sD.indexOf(".");
@@ -353,7 +345,7 @@ public class ButtonFragment extends Fragment {
         fragmentSendDataListener.onSendData(sbHistory);//выводим в поле с историей
     }
 
-    public void clearAll () {
+    public void clearAll() {
         binding.etInput.setText("");
         num2 = 0;
         num1 = 0;
