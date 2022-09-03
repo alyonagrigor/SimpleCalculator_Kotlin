@@ -233,25 +233,19 @@ public class ButtonFragment extends Fragment {
 
         //кнопка равно
         binding.calc.setOnClickListener(v -> {
-            if (!hasNum1 && sInput.equals("") && operator == '0') {
+            if (!hasNum1 && sInput.equals("")) {
                 showToastFirstDigit(); //если еще ничего не введено
-            } else if (hasNum1 && sInput.equals("") && operator != '0') {
-                showToastNextDigit(); //если есть результат предыдущих операций
-                //и арифм.оператор, но нет правого операнда
-            } else if (hasNum1 && sInput.equals("") && operator == '0') {
-                showToastNextDigit(); //если есть результат предыдущих операций, но нет
-                //правого операнда и арифм.оператора
+            } else if (!hasNum1 || sInput.equals("")) {
+                showToastNextDigit(); //если нет num1, либо нет правого операнда
             } else {
                 operationCalc();
-                //выводим историю, включая последнее число, но без оператора
+                //выводим историю, включая последнее число
                 fragmentSendDataListener.onSendData(sbHistory);
                 operator = '0';
                 isLastPressedOperation = false;
                 isBSAvailable = false;
             }
         });
-
-
 
         //кнопка отрицательное/положительное число
         binding.btnNegate.setOnClickListener(v -> {
