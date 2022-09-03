@@ -105,8 +105,8 @@ sbHistory и isBSAvailable присваивается false (т.к. больше
 присвоено значение false, и никакие действия не выполняются.
 
 2.10. Смена знака числа осуществляется 2 способами: нажатие на "-" прежде чем введены какие-то
-числа, нажатие на кнопку Negate. При нажатии на Negate проверяется состояние приложения. Разные
-действия выполняются если:
+числа, нажатие на кнопку Negate. При нажатии на Negate вызывается метод negateOperation(), который
+ проверяет состояние приложения. Разные действия выполняются если:
 1. В данный момент в строке sInput находится первое введенное число, у которого знак минус был
 добавлен кнопкой "-".
 2. Если не была введена ни одна цифра либо последним действием нажат арифметический оператор - тогда
@@ -149,7 +149,7 @@ public class ButtonFragment extends Fragment {
     boolean hasNum1, isLastPressedOperation, isBSAvailable = false;
     private static final String TAG = "myLogs";
 
-    //переменные для сохранения состояния
+    //константы для сохранения состояния
     final static String sHistoryKey= "sHistoryKey";
     final static String operatorKey= "operatorKey";
     final static String sInputKey= "sInputKey";
@@ -197,7 +197,35 @@ public class ButtonFragment extends Fragment {
         binding.etInput.setText(sInput);
         fragmentSendDataListener.onSendData(sbHistory);
 
-        //определяем слушатели для кнопок действий
+        /* Дальше следуют только слушатели */
+        /* Слушатели для цифр */
+        binding.btn1.setOnClickListener(v -> enterDigit(1));
+        binding.btn2.setOnClickListener(v -> enterDigit(2));
+        binding.btn3.setOnClickListener(v -> enterDigit(3));
+        binding.btn4.setOnClickListener(v -> enterDigit(4));
+        binding.btn5.setOnClickListener(v -> enterDigit(5));
+        binding.btn6.setOnClickListener(v -> enterDigit(6));
+        binding.btn7.setOnClickListener(v -> enterDigit(7));
+        binding.btn8.setOnClickListener(v -> enterDigit(8));
+        binding.btn9.setOnClickListener(v -> enterDigit(9));
+        binding.btn0.setOnClickListener(v -> enterDigit(0));
+
+        binding.btnDot.setOnClickListener(v -> {
+            sbHistory = sbHistory.append(".");
+            sInput = sInput + "."; //записывается в строке для инпута
+            binding.etInput.setText(sInput); //выводится на экран
+            isLastPressedOperation = false;
+            isBSAvailable = true;
+        });
+
+        /* Слушатели для кнопок действий */
+
+        //кнопка Clear
+        binding.btnClear.setOnClickListener(v -> clearAll());
+
+        //кнопка Negate отрицательное/положительное число
+        binding.btnNegate.setOnClickListener(v -> negateOperation());
+
         binding.add.setOnClickListener(v -> {
             MainOperation('+');
             isLastPressedOperation = true;
@@ -247,74 +275,6 @@ public class ButtonFragment extends Fragment {
             }
         });
 
-        //кнопка Negate отрицательное/положительное число
-        binding.btnNegate.setOnClickListener(v -> {
-
-            if (!hasNum1 && sInput.equals("")) { //если еще не была введена ни одна цифра
-                showToastFirstDigit();
-
-            } else if (isLastPressedOperation) {
-                //если нажат арифметический оператор, а новое число не введено
-                showToastNextDigit();
-
-            } else if (!hasNum1 && sInput.charAt(0) == '-') {
-                //если Negate нажимают когда ввели первое число с минусом
-                sbHistory.delete(0, sbHistory.length()); //стираем число из строки sbHistory
-                sInput = sInput.substring(1); //обрезаем минус и пробел в строке sInput
-                binding.etInput.setText(sInput);
-                sbHistory.append(sInput); //и вставляем снова в sbHistory
-                fragmentSendDataListener.onSendData(sbHistory);
-
-            } else if (!hasNum1 && sInput.charAt(0) != '-') {
-                //если Negate нажимают когда ввели первое число положительное
-                sbHistory.delete(0, sbHistory.length()); //стираем число из строки sbHistory
-                sInput = "-" + sInput; //добавляем минус в строке sInput
-                sbHistory.append(sInput); //и вставляем снова в sbHistory
-                fragmentSendDataListener.onSendData(sbHistory);
-
-            } else if (hasNum1 && sInput.equals("")
-                    && !binding.etInput.getText().toString().equals("")) {
-                //если введенное в строке число - результат предыдущих вычислений
-                sInput = binding.etInput.getText().toString(); //получаем значение из текстового поля
-                //т.к. цепочка вычислений перезатирается, перезаписываем sbHistory
-                sbHistory.delete(0, sbHistory.length());
-
-                if (sInput.charAt(0) == '-') { //если получили отриц. число в
-                    //результате предыдущих операций
-                    sInput = sInput.substring(1); //обрезаем минус в строке sInput
-                    sbHistory.append(sInput); //и вставляем снова в sbHistory
-
-                } else if (sInput.charAt(0) != '-') {
-                    sInput = "-" + sInput; //добавляем минус в строке sInput
-                    sbHistory.append(sInput); //и вставляем в sbHistory
-                }
-
-                fragmentSendDataListener.onSendData(sbHistory);
-                operator = '0';
-                hasNum1 = false;
-
-                //"нормальные случаи", когда Negate нажат после числа по ходу вычислений
-            } else if (sInput.charAt(0) != '-' && operator != '0') {
-                int x = sbHistory.lastIndexOf(sInput); //получаем индекс, чтобы обрезать текущее число
-                sbHistory.delete(x, sbHistory.length()); //обрезаем
-                sInput = "-" + sInput; //добавляем минус в строке sInput
-                sbHistory.append("\u200b").append("(").append(sInput).append(")"); //и вставляем снова
-                // в sbHistory вместе с пробелом и добавляем скобки
-                fragmentSendDataListener.onSendData(sbHistory);
-
-            } else if (sInput.charAt(0) == '-' && operator != '0') {
-                int x = sbHistory.lastIndexOf(sInput);
-                sbHistory.delete(x - 2, sbHistory.length()); //обрезаем число с минусом и скобками
-                sInput = sInput.substring(1); //обрезаем минус в строке sInput
-                sbHistory.append(sInput);
-                //и вставляем снова в sbHistory, из которой вырезаем скобки
-                fragmentSendDataListener.onSendData(sbHistory);
-            }
-
-            binding.etInput.setText(sInput);
-            isLastPressedOperation = false;
-            isBSAvailable = false;
-        });
 
         //кнопка Backspace
         binding.btnBack.setOnClickListener(v -> {
@@ -392,28 +352,6 @@ public class ButtonFragment extends Fragment {
                 operator = '0';
                 num2 = 0;
             }
-        });
-
-        binding.btnClear.setOnClickListener(v -> clearAll());
-
-        /* НАЧАЛО добавляем слушатели для цифр*/
-        binding.btn1.setOnClickListener(v -> enterDigit(1));
-        binding.btn2.setOnClickListener(v -> enterDigit(2));
-        binding.btn3.setOnClickListener(v -> enterDigit(3));
-        binding.btn4.setOnClickListener(v -> enterDigit(4));
-        binding.btn5.setOnClickListener(v -> enterDigit(5));
-        binding.btn6.setOnClickListener(v -> enterDigit(6));
-        binding.btn7.setOnClickListener(v -> enterDigit(7));
-        binding.btn8.setOnClickListener(v -> enterDigit(8));
-        binding.btn9.setOnClickListener(v -> enterDigit(9));
-        binding.btn0.setOnClickListener(v -> enterDigit(0));
-
-        binding.btnDot.setOnClickListener(v -> {
-            sbHistory = sbHistory.append(".");
-            sInput = sInput + "."; //записывается в строке для инпута
-            binding.etInput.setText(sInput); //выводится на экран
-            isLastPressedOperation = false;
-            isBSAvailable = true;
         });
     } // КОНЕЦ ONVIEWCREATED
 
@@ -543,6 +481,73 @@ public class ButtonFragment extends Fragment {
 
     public void showToastNextDigit() {
         Toast.makeText(getActivity(), "Введите следующее число", Toast.LENGTH_SHORT).show();
+    }
+
+    public void negateOperation() {
+        if (!hasNum1 && sInput.equals("")) { //если еще не была введена ни одна цифра
+            showToastFirstDigit();
+
+        } else if (isLastPressedOperation) {
+            //если нажат арифметический оператор, а новое число не введено
+            showToastNextDigit();
+
+        } else if (!hasNum1 && sInput.charAt(0) == '-') {
+            //если Negate нажимают когда ввели первое число с минусом
+            sbHistory.delete(0, sbHistory.length()); //стираем число из строки sbHistory
+            sInput = sInput.substring(1); //обрезаем минус и пробел в строке sInput
+            binding.etInput.setText(sInput);
+            sbHistory.append(sInput); //и вставляем снова в sbHistory
+            fragmentSendDataListener.onSendData(sbHistory);
+
+        } else if (!hasNum1 && sInput.charAt(0) != '-') {
+            //если Negate нажимают когда ввели первое число положительное
+            sbHistory.delete(0, sbHistory.length()); //стираем число из строки sbHistory
+            sInput = "-" + sInput; //добавляем минус в строке sInput
+            sbHistory.append(sInput); //и вставляем снова в sbHistory
+            fragmentSendDataListener.onSendData(sbHistory);
+
+        } else if (hasNum1 && sInput.equals("")
+                && !binding.etInput.getText().toString().equals("")) {
+            //если введенное в строке число - результат предыдущих вычислений
+            sInput = binding.etInput.getText().toString(); //получаем значение из текстового поля
+            //т.к. цепочка вычислений перезатирается, перезаписываем sbHistory
+            sbHistory.delete(0, sbHistory.length());
+
+            if (sInput.charAt(0) == '-') { //если получили отриц. число в
+                //результате предыдущих операций
+                sInput = sInput.substring(1); //обрезаем минус в строке sInput
+                sbHistory.append(sInput); //и вставляем снова в sbHistory
+
+            } else if (sInput.charAt(0) != '-') {
+                sInput = "-" + sInput; //добавляем минус в строке sInput
+                sbHistory.append(sInput); //и вставляем в sbHistory
+            }
+
+            fragmentSendDataListener.onSendData(sbHistory);
+            operator = '0';
+            hasNum1 = false;
+
+            //"нормальные случаи", когда Negate нажат после числа по ходу вычислений
+        } else if (sInput.charAt(0) != '-' && operator != '0') {
+            int x = sbHistory.lastIndexOf(sInput); //получаем индекс, чтобы обрезать текущее число
+            sbHistory.delete(x, sbHistory.length()); //обрезаем
+            sInput = "-" + sInput; //добавляем минус в строке sInput
+            sbHistory.append("\u200b").append("(").append(sInput).append(")"); //и вставляем снова
+            // в sbHistory вместе с пробелом и добавляем скобки
+            fragmentSendDataListener.onSendData(sbHistory);
+
+        } else if (sInput.charAt(0) == '-' && operator != '0') {
+            int x = sbHistory.lastIndexOf(sInput);
+            sbHistory.delete(x - 2, sbHistory.length()); //обрезаем число с минусом и скобками
+            sInput = sInput.substring(1); //обрезаем минус в строке sInput
+            sbHistory.append(sInput);
+            //и вставляем снова в sbHistory, из которой вырезаем скобки
+            fragmentSendDataListener.onSendData(sbHistory);
+        }
+
+        binding.etInput.setText(sInput);
+        isLastPressedOperation = false;
+        isBSAvailable = false;
     }
 
     // сохранение состояния
