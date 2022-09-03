@@ -220,11 +220,10 @@ public class ButtonFragment extends Fragment {
 
         /* Слушатели для кнопок действий */
 
-        //кнопка Clear
         binding.btnClear.setOnClickListener(v -> clearAll());
-
-        //кнопка Negate отрицательное/положительное число
         binding.btnNegate.setOnClickListener(v -> negateOperation());
+        binding.btnBack.setOnClickListener(v -> bSOperation());
+        binding.btnPercent.setOnClickListener(v -> percentOperation());
 
         binding.add.setOnClickListener(v -> {
             MainOperation('+');
@@ -274,86 +273,7 @@ public class ButtonFragment extends Fragment {
                 isBSAvailable = false;
             }
         });
-
-
-        //кнопка Backspace
-        binding.btnBack.setOnClickListener(v -> {
-            if (isBSAvailable && sInput.length() > 3 //в строке могут быть пробел и
-                    // минус, поэтому безопасно стирать можно если больше 3 символов
-                    || isBSAvailable && sInput.length() == 2) {
-                //или если в строке осталось 2 символа, то есть 2 цифры без минуса
-                sInput = sInput.substring(0, sInput.length() - 1);
-                sbHistory.deleteCharAt(sbHistory.length() - 1);
-            } else if (isBSAvailable && sInput.length() == 3 && sInput.charAt(1) != '-') {
-                //если в строке 3 символа и второй - не минус, то можно стирать последний
-                //символ безопасно
-                sInput = sInput.substring(0, 2);
-                sbHistory.deleteCharAt(sbHistory.length() - 1);
-            } else if (isBSAvailable && sInput.length() == 3 && sInput.charAt(1) == '-') {
-                //если в строке 3 символа и второй - минус, то можно стирать все 3 символа:
-                //цифру, минус, пробел
-                sInput = "0";
-                sbHistory.delete(sbHistory.length() - 3, sbHistory.length());
-                isBSAvailable = false;
-            } else if (isBSAvailable && sInput.length() == 1) {
-                //если в строке осталась только 1 цифра, заменяем ее на ноль
-                sInput = "0";
-                sbHistory.deleteCharAt(sbHistory.length() - 1);
-                isBSAvailable = false;
-            }
-            binding.etInput.setText(sInput);
-            fragmentSendDataListener.onSendData(sbHistory);
-        });
-
-        //кнопка процент
-        binding.btnPercent.setOnClickListener(v -> {
-            if (!hasNum1 && sInput.equals("") && operator == '0') {
-                showToastFirstDigit(); // если не введено ни одно число и не нажата ни одна
-                // арифметическая операция
-
-            } else if (!hasNum1 && !sInput.equals("") && operator == '0') {
-                //если введено только 1 число, а кнопка арифметической операции не нажата, то
-                // рассчитать 1 процент
-                num1 = Double.parseDouble(sInput);
-                sbHistory.append(sInput).append("\u200b/100"); //записываем первое число в
-                // историю и указываем, что мы рассчитали 1%
-                fragmentSendDataListener.onSendData(sbHistory);
-                num2 = num1 / 100;
-                cutZeroOutput(num2); //обрезаем ноль, если нужно, и выводим в строке input, num2
-                // при этом не изменяется
-                isLastPressedOperation = false;
-                isBSAvailable = false;
-                sInput = Double.toString(num2); //передаем результат в sInput и num1 и обнуляем num2
-                num1 = num2;
-                num2 = 0;
-
-            } else if (hasNum1 && sInput.equals("") && operator != '0' && isLastPressedOperation) {
-                //если введено 1 числ
-                // о и оператор, но 2-е число не введено - то выводим подсказку
-                showToastNextDigit();
-
-            } else if (hasNum1 && !sInput.equals("") && operator != '0' && !isLastPressedOperation) {
-                //заданы 2 операнда и арифметическая операция в operator - рассчитываем num2 процентов от num1
-                num2 = Double.parseDouble(sInput);
-                Log.d(TAG, "num1 = " + num1);
-                Log.d(TAG, "num2 = " + num2);
-                //сначала вычисляем num2 процентов от num1 и перезаписываем num2
-                num2 = num1 / 100 * num2;
-                sInput = Double.toString(num2);
-                Log.d(TAG, "промежуточный num2 = " + num2);
-                operationCalc(); //выполняем заданную арифм. операцию
-                Log.d(TAG, "num1 = " + num1);
-                sbHistory.append("%").append("\u200b"); //записываем в строку памяти знак процента
-                // и пробел
-                fragmentSendDataListener.onSendData(sbHistory);
-                isLastPressedOperation = false;
-                isBSAvailable = false;
-                sInput = "";
-                operator = '0';
-                num2 = 0;
-            }
-        });
-    } // КОНЕЦ ONVIEWCREATED
+    }
 
     public void MainOperation (char sign){
 
@@ -424,11 +344,6 @@ public class ButtonFragment extends Fragment {
                     binding.etInput.setText(R.string.error);
                     clearAll();
                 }
-                break;
-
-            case ('0'):
-                binding.etInput.setText(R.string.error);
-                clearAll();
                 break;
         }
 
@@ -548,6 +463,76 @@ public class ButtonFragment extends Fragment {
         binding.etInput.setText(sInput);
         isLastPressedOperation = false;
         isBSAvailable = false;
+    }
+
+    public void bSOperation() {
+        if (isBSAvailable && sInput.length() > 3 //в строке могут быть пробел и
+                // минус, поэтому безопасно стирать можно если больше 3 символов
+                || isBSAvailable && sInput.length() == 2) {
+            //или если в строке осталось 2 символа, то есть 2 цифры без минуса
+            sInput = sInput.substring(0, sInput.length() - 1);
+            sbHistory.deleteCharAt(sbHistory.length() - 1);
+        } else if (isBSAvailable && sInput.length() == 3 && sInput.charAt(1) != '-') {
+            //если в строке 3 символа и второй - не минус, то можно стирать последний
+            //символ безопасно
+            sInput = sInput.substring(0, 2);
+            sbHistory.deleteCharAt(sbHistory.length() - 1);
+        } else if (isBSAvailable && sInput.length() == 3 && sInput.charAt(1) == '-') {
+            //если в строке 3 символа и второй - минус, то можно стирать все 3 символа:
+            //цифру, минус, пробел
+            sInput = "0";
+            sbHistory.delete(sbHistory.length() - 3, sbHistory.length());
+            isBSAvailable = false;
+        } else if (isBSAvailable && sInput.length() == 1) {
+            //если в строке осталась только 1 цифра, заменяем ее на ноль
+            sInput = "0";
+            sbHistory.deleteCharAt(sbHistory.length() - 1);
+            isBSAvailable = false;
+        }
+        binding.etInput.setText(sInput);
+        fragmentSendDataListener.onSendData(sbHistory);
+    }
+
+    public void percentOperation() {
+
+        if (!hasNum1 && sInput.equals("")){
+            showToastFirstDigit(); // если не введено ни одно число и не нажата ни одна
+            // арифметическая операция
+
+        } else if (!hasNum1){ //если введено только 1 число, а кнопка арифметической операции
+            // не нажата, то рассчитать 1 процент
+            num1 = Double.parseDouble(sInput);
+            sbHistory.append("\u200b * 1% \u200b"); //записываем первое число в
+            // историю и указываем, что мы рассчитали 1%
+            fragmentSendDataListener.onSendData(sbHistory);
+            num2 = num1 / 100;
+            cutZeroOutput(num2); //обрезаем ноль, если нужно, и выводим в строке input
+            isLastPressedOperation = false;
+            isBSAvailable = false;
+            sInput = Double.toString(num2); //передаем результат в sInput и num1 и обнуляем num2
+            num1 = num2;
+            num2 = 0;
+
+        } else if (sInput.equals("") && isLastPressedOperation) {
+            //если есть num1 и оператор, но правого операнда нет - то выводим подсказку
+            showToastNextDigit();
+
+        } else if (!sInput.equals("") && operator!='0' && !isLastPressedOperation) {
+            //заданы 2 операнда и арифметическая операция в operator - рассчитываем
+            // num2 процентов от num1
+            num2 = Double.parseDouble(sInput);
+            //сначала вычисляем num2 процентов от num1 и перезаписываем num2
+            num2 = num1 / 100 * num2;
+            sInput = Double.toString(num2);
+            operationCalc(); //выполняем заданную арифм. операцию
+            sbHistory.append("% \u200b"); //записываем в строку памяти знак процента
+            // и пробел
+            fragmentSendDataListener.onSendData(sbHistory);
+            isLastPressedOperation = false;
+            isBSAvailable = false;
+            operator = '0';
+            num2 = 0;
+        }
     }
 
     // сохранение состояния
