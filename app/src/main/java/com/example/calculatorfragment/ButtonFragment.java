@@ -128,7 +128,7 @@ public class ButtonFragment extends Fragment {
         try {
             fragmentSendDataListener = (OnFragmentSendDataListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
+            throw new ClassCastException(context
                     + " должен реализовывать интерфейс OnFragmentInteractionListener");
         }
     }
@@ -275,7 +275,7 @@ public class ButtonFragment extends Fragment {
         } else if (!hasNum1) {
             //если в строке sInput записано число, но оператор и num1 еще не записан
             operator = sign; //записываем в текущий оператор
-            sendOperatorToHistory();
+            sendOperatorToJournal();
             num1 = Double.parseDouble(sInput); //записываем первое введенное число в num1
             hasNum1 = true; // num1 теперь не пустое
             sInput = ""; // очищаем для ввода следующего операнда, но не отображаем
@@ -284,18 +284,18 @@ public class ButtonFragment extends Fragment {
         } else if (sInput.equals("") && operator == '0' && !isLastPressedOperation) {
             //последующие операции после первой
             operator = sign; //записываем в текущий оператор
-            sendOperatorToHistory();
+            sendOperatorToJournal();
 
         } else if (!sInput.equals("") && operator != '0' && !isLastPressedOperation) {
             //если в строке sInput записано  число, есть num1 и оператор, то срабатывает как кнопка =
             operationCalc();
             operator = sign; //записываем в текущий оператор
-            sendOperatorToHistory();
+            sendOperatorToJournal();
 
         } else if (isLastPressedOperation) { //если был только что нажат другой оператор
             operator = sign; //записываем в текущий оператор
             sbHistory.delete(sbHistory.length() - 3, sbHistory.length()); // удаляем предыдущий оператор из истории
-            sendOperatorToHistory();
+            sendOperatorToJournal();
         }
     }
 
@@ -485,16 +485,10 @@ public class ButtonFragment extends Fragment {
         }
     }
 
-    /* Служебные методы */
+    /* Вспомогательные методы */
 
-    public void sendSInputToJournal() {
-        sbHistory.append(sInput);
-        fragmentSendDataListener.onSendData(sbHistory);
-    }
-
-    // обрезаем .0 при выводе в input
     public void cutZeroOutput (double d){
-        String sD= String.valueOf(d);
+        String sD= String.valueOf(d); // обрезаем .0 при выводе в input
         if (sD.endsWith(".0")) {
             int x = sD.indexOf(".");
             sD = sD.substring(0, x);
@@ -502,7 +496,12 @@ public class ButtonFragment extends Fragment {
         binding.etInput.setText(sD);
     }
 
-    public void sendOperatorToHistory() {
+    public void sendSInputToJournal() {
+        sbHistory.append(sInput);
+        fragmentSendDataListener.onSendData(sbHistory);
+    }
+
+    public void sendOperatorToJournal() {
         sbHistory.append("\u200b").append(operator).append("\u200b"); //записываем в историю
         fragmentSendDataListener.onSendData(sbHistory);//выводим в поле с историей
     }
