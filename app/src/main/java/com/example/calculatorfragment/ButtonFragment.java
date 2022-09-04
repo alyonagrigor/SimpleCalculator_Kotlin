@@ -117,7 +117,7 @@ public class ButtonFragment extends Fragment {
         super(R.layout.fragment_button);
     }
 
-    //интерфейс для передачи данных в JournalFragment
+    /* интерфейс для передачи данных в JournalFragment */
     interface OnFragmentSendDataListener {
         void onSendData(StringBuilder data);
     }
@@ -133,7 +133,6 @@ public class ButtonFragment extends Fragment {
         }
     }
 
-    //глобальные переменные
     private FragmentButtonBinding binding;
     private OnFragmentSendDataListener fragmentSendDataListener;
     StringBuilder sbHistory = new StringBuilder("");
@@ -141,9 +140,8 @@ public class ButtonFragment extends Fragment {
     char operator = '0';
     double num1, num2 = 0;
     boolean hasNum1, isLastPressedOperation, isBSAvailable = false;
-    private static final String TAG = "myLogs";
 
-    //константы для сохранения состояния
+    /* константы для сохранения состояния */
     final static String sHistoryKey= "sHistoryKey";
     final static String operatorKey= "operatorKey";
     final static String sInputKey= "sInputKey";
@@ -167,7 +165,7 @@ public class ButtonFragment extends Fragment {
         binding = FragmentButtonBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        //восстановление состояния
+        /* Восстановление состояния */
         if (savedInstanceState != null) {
             sHistory = savedInstanceState.getString(sHistoryKey);
             sbHistory.delete(0, sbHistory.length());
@@ -180,18 +178,16 @@ public class ButtonFragment extends Fragment {
             isLastPressedOperation = savedInstanceState.getBoolean(isLastPressedOperationKey);
             isBSAvailable = savedInstanceState.getBoolean(isBSAvailableKey);
         }
-
         return view;
     }
 
     public void onViewCreated (@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        //выводим пустые строки
-        binding.etInput.setText(sInput);
+        binding.etInput.setText(sInput); //выводим пустые строки
         fragmentSendDataListener.onSendData(sbHistory);
 
-        /* Дальше следуют только слушатели */
+        /* Дальше в onViewCreated() следуют только слушатели */
         /* Слушатели для цифр */
         binding.btn1.setOnClickListener(v -> enterDigit(1));
         binding.btn2.setOnClickListener(v -> enterDigit(2));
@@ -213,7 +209,6 @@ public class ButtonFragment extends Fragment {
         });
 
         /* Слушатели для кнопок действий */
-
         binding.btnClear.setOnClickListener(v -> clearAll());
         binding.btnNegate.setOnClickListener(v -> negateOperation());
         binding.btnBack.setOnClickListener(v -> bSOperation());
@@ -232,15 +227,16 @@ public class ButtonFragment extends Fragment {
         });
 
         binding.sub.setOnClickListener(v -> {
-            //если нажимаем минус прежде чем ввести какое-либо число, то число будет
-            //отрицательным
+            //если нажать минус перед вводом первого числа, то число будет отрицательным
             if (!hasNum1 && sInput.equals("")) {
+
                 sInput = "-";
                 binding.etInput.setText(sInput);
                 sbHistory = sbHistory.append("\u200b-");
                 fragmentSendDataListener.onSendData(sbHistory);
                 isLastPressedOperation = false;
                 isBSAvailable = true;
+
             } else {
                 MainOperation('-');
                 isLastPressedOperation = true;
@@ -254,7 +250,7 @@ public class ButtonFragment extends Fragment {
             isBSAvailable = false;
         });
 
-        //кнопка равно
+        /* кнопка равно */
         binding.calc.setOnClickListener(v -> {
             if (!hasNum1 && sInput.equals("")) {
                 showToastFirstDigit(); //если еще ничего не введено
@@ -262,7 +258,6 @@ public class ButtonFragment extends Fragment {
                 showToastNextDigit(); //если нет num1, либо нет правого операнда
             } else {
                 operationCalc();
-                //выводим историю, включая последнее число
                 fragmentSendDataListener.onSendData(sbHistory);
                 operator = '0';
                 isLastPressedOperation = false;
@@ -271,6 +266,7 @@ public class ButtonFragment extends Fragment {
         });
     }
 
+    /* Основные методы */
     public void MainOperation (char sign) {
 
         if (!hasNum1 && sInput.equals("")) {
@@ -303,7 +299,6 @@ public class ButtonFragment extends Fragment {
         }
     }
 
-    //метод выполняет основную операцию - расчет
     public void operationCalc() {
         num2 = Double.parseDouble(sInput); // получаем введенное число
 
@@ -330,19 +325,19 @@ public class ButtonFragment extends Fragment {
         sInput = "";
     }
 
-    // обрезаем .0 при выводе в input
-    public void cutZeroOutput (double d){
-        String sD= String.valueOf(d);
-        if (sD.endsWith(".0")) {
-            int x = sD.indexOf(".");
-            sD = sD.substring(0, x);
+    //метод, вызываемый при нажатии кнопки с цифрой
+    public void enterDigit (int n){
+        //если первая введенная цифра в числе 0, то убираем его
+        if (sInput.equals("0") && !sbHistory.toString().equals("")) {
+            sInput = "";
+            sbHistory.deleteCharAt(sbHistory.length() - 1);
         }
-        binding.etInput.setText(sD);
-    }
 
-    public void sendOperatorToHistory() {
-        sbHistory.append("\u200b").append(operator).append("\u200b"); //записываем в историю
-        fragmentSendDataListener.onSendData(sbHistory);//выводим в поле с историей
+        sInput = sInput + n;
+        sbHistory.append(n);
+        binding.etInput.setText(sInput);
+        isLastPressedOperation = false;
+        isBSAvailable = true;
     }
 
     public void clearAll() {
@@ -359,29 +354,6 @@ public class ButtonFragment extends Fragment {
         fragmentSendDataListener.onSendData(sbHistory);
     }
 
-    //метод, вызываемый при нажатии кнопки с цифрой
-    public void enterDigit (int n){
-        //если первая введенная цифра в числе 0, то убираем его
-        if (sInput.equals("0") && !sbHistory.toString().equals("")) {
-            sInput = "";
-            sbHistory.deleteCharAt(sbHistory.length() - 1);
-        }
-
-        sInput = sInput + n;
-        sbHistory.append(n);
-        binding.etInput.setText(sInput);
-        isLastPressedOperation = false;
-        isBSAvailable = true;
-    }
-
-    public void showToastFirstDigit() {
-        Toast.makeText(getActivity(), "Введите хотя бы одно число", Toast.LENGTH_SHORT).show();
-    }
-
-    public void showToastNextDigit() {
-        Toast.makeText(getActivity(), "Введите следующее число", Toast.LENGTH_SHORT).show();
-    }
-
     public void negateOperation() {
         if (!hasNum1 && sInput.equals("")) { //если еще не была введена ни одна цифра
             showToastFirstDigit();
@@ -395,15 +367,13 @@ public class ButtonFragment extends Fragment {
             sbHistory.delete(0, sbHistory.length()); //стираем число из строки sbHistory
             sInput = sInput.substring(1); //обрезаем минус и пробел в строке sInput
             binding.etInput.setText(sInput);
-            sbHistory.append(sInput); //и вставляем снова в sbHistory
-            fragmentSendDataListener.onSendData(sbHistory);
+            sendSInputToJournal();
 
         } else if (!hasNum1 && sInput.charAt(0) != '-') {
             //если Negate нажимают когда ввели первое число положительное
             sbHistory.delete(0, sbHistory.length()); //стираем число из строки sbHistory
             sInput = "-" + sInput; //добавляем минус в строке sInput
-            sbHistory.append(sInput); //и вставляем снова в sbHistory
-            fragmentSendDataListener.onSendData(sbHistory);
+            sendSInputToJournal();
 
         } else if (hasNum1 && sInput.equals("")
                 && !binding.etInput.getText().toString().equals("")) {
@@ -415,14 +385,12 @@ public class ButtonFragment extends Fragment {
             if (sInput.charAt(0) == '-') { //если получили отриц. число в
                 //результате предыдущих операций
                 sInput = sInput.substring(1); //обрезаем минус в строке sInput
-                sbHistory.append(sInput); //и вставляем снова в sbHistory
 
             } else if (sInput.charAt(0) != '-') {
                 sInput = "-" + sInput; //добавляем минус в строке sInput
-                sbHistory.append(sInput); //и вставляем в sbHistory
             }
 
-            fragmentSendDataListener.onSendData(sbHistory);
+            sendSInputToJournal();
             operator = '0';
             hasNum1 = false;
 
@@ -439,9 +407,7 @@ public class ButtonFragment extends Fragment {
             int x = sbHistory.lastIndexOf(sInput);
             sbHistory.delete(x - 2, sbHistory.length()); //обрезаем число с минусом и скобками
             sInput = sInput.substring(1); //обрезаем минус в строке sInput
-            sbHistory.append(sInput);
-            //и вставляем снова в sbHistory, из которой вырезаем скобки
-            fragmentSendDataListener.onSendData(sbHistory);
+            sendSInputToJournal();
         }
 
         binding.etInput.setText(sInput);
@@ -519,7 +485,37 @@ public class ButtonFragment extends Fragment {
         }
     }
 
-    // сохранение состояния
+    /* Служебные методы */
+
+    public void sendSInputToJournal() {
+        sbHistory.append(sInput);
+        fragmentSendDataListener.onSendData(sbHistory);
+    }
+
+    // обрезаем .0 при выводе в input
+    public void cutZeroOutput (double d){
+        String sD= String.valueOf(d);
+        if (sD.endsWith(".0")) {
+            int x = sD.indexOf(".");
+            sD = sD.substring(0, x);
+        }
+        binding.etInput.setText(sD);
+    }
+
+    public void sendOperatorToHistory() {
+        sbHistory.append("\u200b").append(operator).append("\u200b"); //записываем в историю
+        fragmentSendDataListener.onSendData(sbHistory);//выводим в поле с историей
+    }
+
+    public void showToastFirstDigit() {
+        Toast.makeText(getActivity(), "Введите хотя бы одно число", Toast.LENGTH_SHORT).show();
+    }
+
+    public void showToastNextDigit() {
+        Toast.makeText(getActivity(), "Введите следующее число", Toast.LENGTH_SHORT).show();
+    }
+
+    /* Сохранение состояния */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         sHistory = sbHistory.toString();
