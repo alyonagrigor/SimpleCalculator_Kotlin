@@ -11,7 +11,7 @@ import com.example.calculatorfragment.databinding.FragmentButtonBinding
 import java.lang.ClassCastException
 import java.lang.StringBuilder
 
-/*
+/**
 
 ДОКУМЕНТАЦИЯ
 1. Структура приложения.
@@ -170,7 +170,6 @@ class ButtonFragment : Fragment(R.layout.fragment_button) {
         binding.etInput.setText(sInput) //выводим пустые строки
         fragmentSendDataListener!!.onSendData(sbHistory)
 
-        /* Дальше в onViewCreated() следуют только слушатели */
         /* Слушатели для цифр */
         binding.btn1.setOnClickListener { enterDigit(1) }
         binding.btn2.setOnClickListener { enterDigit(2) }
@@ -286,7 +285,7 @@ class ButtonFragment : Fragment(R.layout.fragment_button) {
         sInput = ""
     }
 
-    //метод, вызываемый при нажатии кнопки с цифрой
+    /*метод, вызываемый при нажатии кнопки с цифрой*/
     private fun enterDigit(n: Int) {
         //если первая введенная цифра в числе 0, то убираем его
         if (sInput == "0" && sbHistory.toString() != "") {
@@ -346,7 +345,7 @@ class ButtonFragment : Fragment(R.layout.fragment_button) {
             operator = '0'
             hasNum1 = false
 
-            //"нормальные случаи", когда Negate нажат после числа по ходу вычислений
+            /*стандартные случаи, когда Negate нажат после числа по ходу вычислений*/
         } else if (sInput[0] != '-' && operator != '0') {
             val x = sbHistory.lastIndexOf(sInput) //получаем индекс, чтобы обрезать текущее число
             sbHistory.delete(x, sbHistory.length) //обрезаем
