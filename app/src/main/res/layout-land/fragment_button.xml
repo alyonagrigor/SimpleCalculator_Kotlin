@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,6 +7,14 @@
     android:layout_marginTop="@dimen/button_fragment_margin"
     android:layout_marginEnd="@dimen/button_fragment_margin"
     android:layout_marginBottom="@dimen/button_fragment_margin">
+
+    <data>
+
+        <variable
+            name="calcViewModel"
+            type="com.example.calculatorfragment.viewmodel.CalcViewModel" />
+    </data>
+
 
     <EditText
         android:id="@+id/etInput"
@@ -17,6 +25,7 @@
         android:ems="10"
         android:fontFamily="Poppins"
         android:inputType="number"
+        android:text="@{calcViewModel.sInput}"
         android:textAlignment="viewEnd"
         android:textColor="#555555"
         android:textSize="@dimen/input_text_size_landscape"
@@ -254,4 +263,4 @@
             app:layout_constraintTop_toBottomOf="@+id/div" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

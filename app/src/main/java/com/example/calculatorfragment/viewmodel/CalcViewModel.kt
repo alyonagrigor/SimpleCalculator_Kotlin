@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 
 class CalcViewModel : ViewModel() {
     private val _sbHistory = MutableLiveData<StringBuilder>()
-    val sHistory : LiveData<StringBuilder>
+    val sbHistory : LiveData<StringBuilder>
         get() = _sbHistory
 
     private val _sInput = MutableLiveData<String>()
@@ -48,7 +48,14 @@ class CalcViewModel : ViewModel() {
 
 
     init {
-
+        _sbHistory.value = StringBuilder("")
+        _sInput.value = ""
+        _operator.value = '0'
+        _num1.value = 0.0
+        _num2.value = 0.0
+        _hasNum1.value = false
+        _isLastPressedOperation.value = false
+        _isBSAvailable.value = false
     }
 
     override fun onCleared() {
