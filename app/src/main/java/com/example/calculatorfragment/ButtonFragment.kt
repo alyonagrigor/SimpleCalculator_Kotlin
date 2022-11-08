@@ -460,6 +460,7 @@ class ButtonFragment : Fragment(R.layout.fragment_button) {
         Toast.makeText(activity, "Введите следующее число", Toast.LENGTH_SHORT).show()
     }
 
+
     /* Сохранение состояния */
     override fun onSaveInstanceState(outState: Bundle) {
         sHistory = sbHistory.toString()
