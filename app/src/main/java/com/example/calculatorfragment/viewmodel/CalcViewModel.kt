@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class CalcViewModel : ViewModel() {
-    private val _sHistory = MutableLiveData<String>()
-    val sHistory : LiveData<String>
-        get() = _sHistory
+    private val _sbHistory = MutableLiveData<StringBuilder>()
+    val sHistory : LiveData<StringBuilder>
+        get() = _sbHistory
 
     private val _sInput = MutableLiveData<String>()
     val sInput : LiveData<String>

@@ -110,6 +110,7 @@ sbHistory и isBSAvailable присваивается false (т.к. больше
 4. "Нормальный" случай, когда число введено и нажата кнопка Negate.
 
 * */
+
 class ButtonFragment : Fragment(R.layout.fragment_button) {
     /* интерфейс для передачи данных в JournalFragment */
     internal interface OnFragmentSendDataListener {
@@ -132,7 +133,6 @@ class ButtonFragment : Fragment(R.layout.fragment_button) {
     private val binding get() = _binding!!
     private var fragmentSendDataListener: OnFragmentSendDataListener? = null
     private var sbHistory = StringBuilder("")
-    private var sHistory: String = ""
     private var sInput: String = ""
     private var operator = '0'
     private var num1 = 0.0
@@ -149,19 +149,6 @@ class ButtonFragment : Fragment(R.layout.fragment_button) {
         _binding = FragmentButtonBinding.inflate(inflater, container, false)
         val view: View = binding.root
 
-        /* Восстановление состояния */
-        if (savedInstanceState != null) {
-            sHistory = savedInstanceState.getString(sHistoryKey).toString()
-            sbHistory.delete(0, sbHistory.length)
-            sbHistory.append(sHistory)
-            operator = savedInstanceState.getChar(operatorKey)
-            sInput = savedInstanceState.getString(sInputKey).toString()
-            num1 = savedInstanceState.getDouble(num1Key)
-            num2 = savedInstanceState.getDouble(num2Key)
-            hasNum1 = savedInstanceState.getBoolean(hasNum1Key)
-            isLastPressedOperation = savedInstanceState.getBoolean(isLastPressedOperationKey)
-            isBSAvailable = savedInstanceState.getBoolean(isBSAvailableKey)
-        }
         return view
     }
 
@@ -309,7 +296,6 @@ class ButtonFragment : Fragment(R.layout.fragment_button) {
         sInput = ""
         operator = '0'
         sbHistory.delete(0, sbHistory.length)
-        sHistory = ""
         fragmentSendDataListener!!.onSendData(sbHistory)
     }
 
@@ -460,35 +446,8 @@ class ButtonFragment : Fragment(R.layout.fragment_button) {
         Toast.makeText(activity, "Введите следующее число", Toast.LENGTH_SHORT).show()
     }
 
-
-    /* Сохранение состояния */
-    override fun onSaveInstanceState(outState: Bundle) {
-        sHistory = sbHistory.toString()
-        outState.putString(sHistoryKey, sHistory)
-        outState.putChar(operatorKey, operator)
-        outState.putString(sInputKey, sInput)
-        outState.putDouble(num1Key, num1)
-        outState.putDouble(num2Key, num2)
-        outState.putBoolean(hasNum1Key, hasNum1)
-        outState.putBoolean(isLastPressedOperationKey, isLastPressedOperation)
-        outState.putBoolean(isBSAvailableKey, isBSAvailable)
-        super.onSaveInstanceState(outState)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        /* константы для сохранения состояния */
-        const val sHistoryKey = "sHistoryKey"
-        const val operatorKey = "operatorKey"
-        const val sInputKey = "sInputKey"
-        const val num1Key = "num1Key"
-        const val num2Key = "num2Key"
-        const val hasNum1Key = "hasNum1Key"
-        const val isLastPressedOperationKey = "isLastPressedOperationKey"
-        const val isBSAvailableKey = "isBSAvailableKey"
     }
 }
