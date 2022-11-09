@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -137,109 +138,14 @@ class ButtonFragment: Fragment(R.layout.fragment_button) {
         return binding.root
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        binding.etInput.setText(sInput) //выводим пустые строки
-//        fragmentSendDataListener!!.onSendData(sbHistory)
+    fun showToastFirstDigit() {
+        Toast.makeText(activity, "Введите хотя бы одно число", Toast.LENGTH_SHORT).show()
+    }
 
+    fun showToastNextDigit() {
+        Toast.makeText(activity, "Введите следующее число", Toast.LENGTH_SHORT).show()
+    }
 
-//
-//        /* Слушатели для кнопок действий */
-//        binding.btnClear.setOnClickListener { clearAll() }
-//        binding.btnNegate.setOnClickListener { negateOperation() }
-//        binding.btnBack.setOnClickListener { bSOperation() }
-//        binding.btnPercent.setOnClickListener { percentOperation() }
-//        binding.add.setOnClickListener {
-//            mainOperation('+')
-//            isLastPressedOperation = true
-//            isBSAvailable = false
-//        }
-//        binding.mult.setOnClickListener {
-//            mainOperation('*')
-//            isLastPressedOperation = true
-//            isBSAvailable = false
-//        }
-//        binding.sub.setOnClickListener {
-//            //если нажать минус перед вводом первого числа, то число будет отрицательным
-//            if (!hasNum1 && sInput == "") {
-//                sInput = "-"
-//                binding.etInput.setText(sInput)
-//                sbHistory = sbHistory.append("\u200b-")
-//                fragmentSendDataListener!!.onSendData(sbHistory)
-//                isLastPressedOperation = false
-//                isBSAvailable = true
-//            } else {
-//                mainOperation('-')
-//                isLastPressedOperation = true
-//                isBSAvailable = false
-//            }
-//        }
-//        binding.div.setOnClickListener {
-//            mainOperation('/')
-//            isLastPressedOperation = true
-//            isBSAvailable = false
-//        }
-//
-//        /* кнопка равно */
-//        binding.calc.setOnClickListener {
-//            if (!hasNum1 && sInput == "") {
-//                showToastFirstDigit() //если еще ничего не введено
-//            } else if (!hasNum1 || sInput == "") {
-//                showToastNextDigit() //если нет num1, либо нет правого операнда
-//            } else {
-//                operationCalc()
-//                fragmentSendDataListener!!.onSendData(sbHistory)
-//                operator = '0'
-//                isLastPressedOperation = false
-//                isBSAvailable = false
-//            }
-//        }
-//    }
-//
-//    /* Основные методы */
-//    private fun mainOperation(sign: Char) {
-//        if (!hasNum1 && sInput == "") {
-//            showToastFirstDigit()
-//        } else if (!hasNum1) {
-//            //если в строке sInput записано число, но оператор и num1 еще не записан
-//            operator = sign //записываем в текущий оператор
-//            sendOperatorToJournal()
-//            num1 = sInput.toDouble() //записываем первое введенное число в num1
-//            hasNum1 = true // num1 теперь не пустое
-//            sInput = "" // очищаем для ввода следующего операнда, но не отображаем
-//            binding.etInput.setText(sInput)
-//        } else if (sInput == "" && operator == '0' && !isLastPressedOperation) {
-//            //последующие операции после первой
-//            operator = sign //записываем в текущий оператор
-//            sendOperatorToJournal()
-//        } else if (sInput != "" && operator != '0' && !isLastPressedOperation) {
-//            //если в строке sInput записано  число, есть num1 и оператор, то срабатывает как кнопка =
-//            operationCalc()
-//            operator = sign //записываем в текущий оператор
-//            sendOperatorToJournal()
-//        } else if (isLastPressedOperation) { //если был только что нажат другой оператор
-//            operator = sign //записываем в текущий оператор
-//            sbHistory.delete(
-//                sbHistory.length - 3,
-//                sbHistory.length
-//            ) // удаляем предыдущий оператор из истории
-//            sendOperatorToJournal()
-//        }
-//    }
-//
-//    private fun operationCalc() {
-//        num2 = sInput.toDouble() // получаем введенное число
-//        when (operator) {
-//            '+' -> num1 += num2
-//            '-' -> num1 -= num2
-//            '*' -> num1 *= num2
-//            '/' -> num1 /= num2
-//        }
-//        cutZeroOutput(num1)
-//        num2 = 0.0
-//        sInput = ""
-//    }
-//
 
 
 //
@@ -362,23 +268,7 @@ class ButtonFragment: Fragment(R.layout.fragment_button) {
 //        }
 //    }
 //
-//    /* Вспомогательные методы */
-//    private fun cutZeroOutput(d: Double) {
-//        var sD = d.toString() // обрезаем .0 при выводе в input
-//        if (sD.endsWith(".0")) {
-//            val x = sD.indexOf(".")
-//            sD = sD.substring(0, x)
-//        }
-//        binding.etInput.setText(sD)
-//    }
-//
-//    private fun sendSInputToJournal() {
-//        sbHistory.append(sInput)
-//        fragmentSendDataListener!!.onSendData(sbHistory)
-//    }
-//
-//    private fun sendOperatorToJournal() {
-//        sbHistory.append("\u200b").append(operator).append("\u200b") //записываем в историю
-//        fragmentSendDataListener!!.onSendData(sbHistory) //выводим в поле с историей
+
+
 
 }

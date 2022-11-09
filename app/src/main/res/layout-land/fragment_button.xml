@@ -26,7 +26,7 @@
             android:ems="10"
             android:fontFamily="Poppins"
             android:inputType="number"
-            android:text="@{calcViewModel.sInput}"
+            android:text="@{calcViewModel.showInput}"
             android:textAlignment="viewEnd"
             android:textColor="#555555"
             android:textSize="@dimen/input_text_size_landscape"
@@ -88,6 +88,7 @@
             <Button
                 android:id="@+id/add"
                 style="@style/OperationButtonLandscape"
+                android:onClick="@{() -> calcViewModel.add()}"
                 android:text="@string/add"
                 app:cornerRadius="90dp"
                 app:layout_constraintBottom_toTopOf="@+id/sub"
@@ -133,6 +134,7 @@
             <Button
                 android:id="@+id/sub"
                 style="@style/OperationButtonLandscape"
+                android:onClick="@{() -> calcViewModel.sub()}"
                 android:text="@string/sub"
                 app:cornerRadius="90dp"
                 app:layout_constraintBottom_toTopOf="@+id/mult"
@@ -177,6 +179,7 @@
             <Button
                 android:id="@+id/mult"
                 style="@style/OperationButtonLandscape"
+                android:onClick="@{() -> calcViewModel.mult()}"
                 android:text="@string/mult"
                 app:cornerRadius="90dp"
                 app:layout_constraintBottom_toTopOf="@+id/div"
@@ -220,6 +223,7 @@
             <Button
                 android:id="@+id/div"
                 style="@style/OperationButtonLandscape"
+                android:onClick="@{() -> calcViewModel.div()}"
                 android:text="@string/div"
                 app:cornerRadius="90dp"
                 app:layout_constraintBottom_toTopOf="@+id/calc"
@@ -266,6 +270,7 @@
                 android:backgroundTint="#1991FF"
                 android:fontFamily="Poppins"
                 android:gravity="center"
+                android:onClick="@{() -> calcViewModel.calc()}"
                 android:text="@string/calc"
                 android:textColor="#B2DAFF"
                 android:textSize="@dimen/button_text_size_landscape"
