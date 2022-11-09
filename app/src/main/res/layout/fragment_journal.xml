@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/button_fragment_margin"
-    android:layout_marginEnd="@dimen/button_fragment_margin"
-    tools:context=".JournalFragment"
-    tools:viewBindingIgnore="true">
+    tools:context=".JournalFragment">
 
     <data>
-
         <variable
             name="calcViewModel"
             type="com.example.calculatorfragment.viewmodel.CalcViewModel" />
     </data>
 
-    <TextView
-        android:id="@+id/journal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fontFamily="Poppins"
-        android:lines="2"
-        android:text="@{calcViewModel.sbHistory}"
-        android:textAlignment="viewEnd"
-        android:textSize="@dimen/journal_text_size_portrait" />
 
-</layout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginStart="@dimen/button_fragment_margin"
+        android:layout_marginEnd="@dimen/button_fragment_margin"
+        app:layout_constraintEnd_toStartOf="@+id/journal"
+        app:layout_constraintStart_toStartOf="@+id/journal">
+
+        <TextView
+            android:id="@+id/journal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="Poppins"
+            android:lines="2"
+            android:text="@{calcViewModel.sHistory}"
+            android:textAlignment="viewEnd"
+            android:textSize="@dimen/journal_text_size_portrait" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </layout>

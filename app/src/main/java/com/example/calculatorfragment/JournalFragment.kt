@@ -32,7 +32,7 @@ class JournalFragment : Fragment(R.layout.fragment_journal) {
             false
         )
 
-        viewModel = ViewModelProvider(this).get(CalcViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(CalcViewModel::class.java)
 
         binding.calcViewModel = viewModel
 

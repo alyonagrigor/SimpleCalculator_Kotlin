@@ -128,7 +128,7 @@ class ButtonFragment: Fragment(R.layout.fragment_button) {
             false
         )
 
-        viewModel = ViewModelProvider(this).get(CalcViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(CalcViewModel::class.java)
 
         binding.calcViewModel = viewModel
 
@@ -142,24 +142,7 @@ class ButtonFragment: Fragment(R.layout.fragment_button) {
 //        binding.etInput.setText(sInput) //выводим пустые строки
 //        fragmentSendDataListener!!.onSendData(sbHistory)
 
-//        /* Слушатели для цифр */
-//        binding.btn1.setOnClickListener { enterDigit(1) }
-//        binding.btn2.setOnClickListener { enterDigit(2) }
-//        binding.btn3.setOnClickListener { enterDigit(3) }
-//        binding.btn4.setOnClickListener { enterDigit(4) }
-//        binding.btn5.setOnClickListener { enterDigit(5) }
-//        binding.btn6.setOnClickListener { enterDigit(6) }
-//        binding.btn7.setOnClickListener { enterDigit(7) }
-//        binding.btn8.setOnClickListener { enterDigit(8) }
-//        binding.btn9.setOnClickListener { enterDigit(9) }
-//        binding.btn0.setOnClickListener { enterDigit(0) }
-//        binding.btnDot.setOnClickListener {
-//            sbHistory = sbHistory.append(".")
-//            sInput = "$sInput." //записывается в строке для инпута
-//            binding.etInput.setText(sInput) //выводится на экран
-//            isLastPressedOperation = false
-//            isBSAvailable = true
-//        }
+
 //
 //        /* Слушатели для кнопок действий */
 //        binding.btnClear.setOnClickListener { clearAll() }
@@ -257,32 +240,8 @@ class ButtonFragment: Fragment(R.layout.fragment_button) {
 //        sInput = ""
 //    }
 //
-//    /*метод, вызываемый при нажатии кнопки с цифрой*/
-//    private fun enterDigit(n: Int) {
-//        //если первая введенная цифра в числе 0, то убираем его
-//        if (sInput == "0" && sbHistory.toString() != "") {
-//            sInput = ""
-//            sbHistory.deleteCharAt(sbHistory.length - 1)
-//        }
-//        sInput += n
-//        sbHistory.append(n)
-//        binding.etInput.setText(sInput)
-//        isLastPressedOperation = false
-//        isBSAvailable = true
-//    }
-//
-//    private fun clearAll() {
-//        binding.etInput.setText("")
-//        num2 = 0.0
-//        num1 = 0.0
-//        hasNum1 = false
-//        isLastPressedOperation = false
-//        isBSAvailable = false
-//        sInput = ""
-//        operator = '0'
-//        sbHistory.delete(0, sbHistory.length)
-//        fragmentSendDataListener!!.onSendData(sbHistory)
-//    }
+
+
 //
 //    private fun negateOperation() {
 //        if (!hasNum1 && sInput == "") { //если еще не была введена ни одна цифра

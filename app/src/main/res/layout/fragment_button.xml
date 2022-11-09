@@ -11,274 +11,290 @@
     tools:context=".ButtonFragment">
 
     <data>
+
         <variable
             name="calcViewModel"
             type="com.example.calculatorfragment.viewmodel.CalcViewModel" />
     </data>
 
-    <EditText
-        android:id="@+id/etInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="Poppins"
-        android:inputType="number"
-        android:text="@{calcViewModel.sInput}"
-        android:textAlignment="viewEnd"
-        android:textColor="#555555"
-        android:textSize="@dimen/input_text_size_portrait"
-        app:layout_constraintBottom_toTopOf="@+id/panel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside"
-        tools:ignore="Autofill,LabelFor" />
+    <androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/panel"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.75"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etInput">
-
-        <Button
-            android:id="@+id/btn1"
-            style="@style/DigitButtonStyle"
-            android:text="@string/n1"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn4"
-            app:layout_constraintEnd_toStartOf="@+id/btn2"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread_inside" />
-
-        <Button
-            android:id="@+id/btn2"
-            style="@style/DigitButtonStyle"
-            android:text="@string/n2"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn5"
-            app:layout_constraintEnd_toStartOf="@+id/btn3"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btn1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread_inside" />
-
-        <Button
-            android:id="@+id/btn3"
-            style="@style/DigitButtonStyle"
-            android:text="@string/n3"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn6"
-            app:layout_constraintEnd_toStartOf="@+id/add"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btn2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread_inside" />
-
-
-        <Button
-            android:id="@+id/add"
-            style="@style/OperationButtonStyle"
-            android:text="@string/add"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/sub"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btn3"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread_inside" />
-
-        <Button
-            android:id="@+id/btn4"
-            style="@style/DigitButtonStyle"
-            android:text="@string/n4"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn7"
-            app:layout_constraintEnd_toStartOf="@+id/btn5"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn1" />
-
-        <Button
-            android:id="@+id/btn5"
-            style="@style/DigitButtonStyle"
-            android:text="@string/n5"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn8"
-            app:layout_constraintEnd_toStartOf="@+id/btn6"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btn4"
-            app:layout_constraintTop_toBottomOf="@+id/btn2" />
-
-        <Button
-            android:id="@+id/btn6"
-            style="@style/DigitButtonStyle"
-            android:text="@string/n6"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn9"
-            app:layout_constraintEnd_toStartOf="@+id/sub"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btn5"
-            app:layout_constraintTop_toBottomOf="@+id/btn3" />
-
-        <Button
-            android:id="@+id/sub"
-            style="@style/OperationButtonStyle"
-            android:text="@string/sub"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/mult"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btn6"
-            app:layout_constraintTop_toBottomOf="@+id/add" />
-
-        <Button
-            android:id="@+id/btn7"
-            style="@style/DigitButtonStyle"
-            android:text="@string/n7"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnDot"
-            app:layout_constraintEnd_toStartOf="@+id/btn8"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn4" />
-
-        <Button
-            android:id="@+id/btn8"
-            style="@style/DigitButtonStyle"
-            android:text="@string/n8"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn0"
-            app:layout_constraintEnd_toStartOf="@+id/btn9"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btn7"
-            app:layout_constraintTop_toBottomOf="@+id/btn5" />
-
-        <Button
-            android:id="@+id/btn9"
-            style="@style/DigitButtonStyle"
-            android:text="@string/n9"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnPercent"
-            app:layout_constraintEnd_toStartOf="@+id/mult"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btn8"
-            app:layout_constraintTop_toBottomOf="@+id/btn6" />
-
-        <Button
-            android:id="@+id/mult"
-            style="@style/OperationButtonStyle"
-            android:text="@string/mult"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/div"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btn9"
-            app:layout_constraintTop_toBottomOf="@+id/sub" />
-
-        <Button
-            android:id="@+id/btnDot"
-            style="@style/DigitButtonStyle"
-            android:text="@string/dot"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnClear"
-            app:layout_constraintEnd_toStartOf="@+id/btn0"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn7" />
-
-        <Button
-            android:id="@+id/btn0"
-            style="@style/DigitButtonStyle"
-            android:text="@string/n0"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnBack"
-            app:layout_constraintEnd_toStartOf="@+id/btnPercent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnDot"
-            app:layout_constraintTop_toBottomOf="@+id/btn8" />
-
-        <Button
-            android:id="@+id/btnPercent"
-            style="@style/OperationButtonStyle"
-            android:text="@string/per"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnNegate"
-            app:layout_constraintEnd_toStartOf="@+id/div"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btn0"
-            app:layout_constraintTop_toBottomOf="@+id/btn9" />
-
-        <Button
-            android:id="@+id/div"
-            style="@style/OperationButtonStyle"
-            android:text="@string/div"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toTopOf="@+id/calc"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnPercent"
-            app:layout_constraintTop_toBottomOf="@+id/mult" />
-
-        <Button
-            android:id="@+id/btnClear"
-            style="@style/GreyButtonStyle"
-            android:text="@string/clear"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnBack"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnDot" />
-
-        <Button
-            android:id="@+id/btnBack"
-            style="@style/GreyButtonStyle"
-            android:text="@string/bs"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnNegate"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnClear"
-            app:layout_constraintTop_toBottomOf="@+id/btn0" />
-
-        <Button
-            android:id="@+id/btnNegate"
-            style="@style/OperationButtonStyle"
-            android:text="@string/neg"
-            app:cornerRadius="90dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/calc"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnBack"
-            app:layout_constraintTop_toBottomOf="@+id/btnPercent" />
-
-        <Button
-            android:id="@+id/calc"
-            android:layout_width="@dimen/button_size_portrait"
-            android:layout_height="@dimen/button_size_portrait"
-            android:backgroundTint="#1991FF"
+        <EditText
+            android:id="@+id/etInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:fontFamily="Poppins"
-            android:gravity="center"
-            android:text="@string/calc"
-            android:textColor="#B2DAFF"
-            android:textSize="@dimen/button_text_size_portrait"
-            app:cornerRadius="90dp"
+            android:inputType="number"
+            android:text="@{calcViewModel.sInput}"
+            android:textColor="#555555"
+            android:textSize="@dimen/input_text_size_portrait"
+            android:ems="10"
+            android:textAlignment ="viewEnd"
+            app:layout_constraintBottom_toTopOf="@+id/panel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:ignore="Autofill,LabelFor" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/panel"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnNegate"
-            app:layout_constraintTop_toBottomOf="@+id/div" />
+            app:layout_constraintHeight_percent="0.75"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etInput">
 
+            <Button
+                android:id="@+id/btn1"
+                style="@style/DigitButtonStyle"
+                android:onClick="@{() -> calcViewModel.enterDigit(1)}"
+                android:text="@string/n1"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn4"
+                app:layout_constraintEnd_toStartOf="@+id/btn2"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread_inside" />
+
+            <Button
+                android:id="@+id/btn2"
+                style="@style/DigitButtonStyle"
+                android:onClick="@{() -> calcViewModel.enterDigit(2)}"
+                android:text="@string/n2"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn5"
+                app:layout_constraintEnd_toStartOf="@+id/btn3"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread_inside" />
+
+            <Button
+                android:id="@+id/btn3"
+                style="@style/DigitButtonStyle"
+                android:onClick="@{() -> calcViewModel.enterDigit(3)}"
+                android:text="@string/n3"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn6"
+                app:layout_constraintEnd_toStartOf="@+id/add"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread_inside" />
+
+
+            <Button
+                android:id="@+id/add"
+                style="@style/OperationButtonStyle"
+                android:text="@string/add"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/sub"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread_inside" />
+
+            <Button
+                android:id="@+id/btn4"
+                style="@style/DigitButtonStyle"
+                android:onClick="@{() -> calcViewModel.enterDigit(4)}"
+                android:text="@string/n4"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn7"
+                app:layout_constraintEnd_toStartOf="@+id/btn5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn1" />
+
+            <Button
+                android:id="@+id/btn5"
+                style="@style/DigitButtonStyle"
+                android:onClick="@{() -> calcViewModel.enterDigit(5)}"
+                android:text="@string/n5"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn8"
+                app:layout_constraintEnd_toStartOf="@+id/btn6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn4"
+                app:layout_constraintTop_toBottomOf="@+id/btn2" />
+
+            <Button
+                android:id="@+id/btn6"
+                style="@style/DigitButtonStyle"
+                android:onClick="@{() -> calcViewModel.enterDigit(6)}"
+                android:text="@string/n6"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn9"
+                app:layout_constraintEnd_toStartOf="@+id/sub"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn5"
+                app:layout_constraintTop_toBottomOf="@+id/btn3" />
+
+            <Button
+                android:id="@+id/sub"
+                style="@style/OperationButtonStyle"
+                android:text="@string/sub"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/mult"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn6"
+                app:layout_constraintTop_toBottomOf="@+id/add" />
+
+            <Button
+                android:id="@+id/btn7"
+                style="@style/DigitButtonStyle"
+                android:onClick="@{() -> calcViewModel.enterDigit(7)}"
+                android:text="@string/n7"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/btnDot"
+                app:layout_constraintEnd_toStartOf="@+id/btn8"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn4" />
+
+            <Button
+                android:id="@+id/btn8"
+                style="@style/DigitButtonStyle"
+                android:onClick="@{() -> calcViewModel.enterDigit(8)}"
+                android:text="@string/n8"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn0"
+                app:layout_constraintEnd_toStartOf="@+id/btn9"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn7"
+                app:layout_constraintTop_toBottomOf="@+id/btn5" />
+
+            <Button
+                android:id="@+id/btn9"
+                style="@style/DigitButtonStyle"
+                android:onClick="@{() -> calcViewModel.enterDigit(9)}"
+                android:text="@string/n9"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/btnPercent"
+                app:layout_constraintEnd_toStartOf="@+id/mult"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn8"
+                app:layout_constraintTop_toBottomOf="@+id/btn6" />
+
+            <Button
+                android:id="@+id/mult"
+                style="@style/OperationButtonStyle"
+                android:text="@string/mult"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/div"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn9"
+                app:layout_constraintTop_toBottomOf="@+id/sub" />
+
+            <Button
+                android:id="@+id/btnDot"
+                style="@style/DigitButtonStyle"
+                android:onClick="@{() -> calcViewModel.dot()}"
+                android:text="@string/dot"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/btnClear"
+                app:layout_constraintEnd_toStartOf="@+id/btn0"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn7" />
+
+            <Button
+                android:id="@+id/btn0"
+                style="@style/DigitButtonStyle"
+                android:onClick="@{() -> calcViewModel.enterDigit(0)}"
+                android:text="@string/n0"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/btnBack"
+                app:layout_constraintEnd_toStartOf="@+id/btnPercent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btnDot"
+                app:layout_constraintTop_toBottomOf="@+id/btn8" />
+
+            <Button
+                android:id="@+id/btnPercent"
+                style="@style/OperationButtonStyle"
+                android:text="@string/per"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/btnNegate"
+                app:layout_constraintEnd_toStartOf="@+id/div"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn0"
+                app:layout_constraintTop_toBottomOf="@+id/btn9" />
+
+            <Button
+                android:id="@+id/div"
+                style="@style/OperationButtonStyle"
+                android:text="@string/div"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/calc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btnPercent"
+                app:layout_constraintTop_toBottomOf="@+id/mult" />
+
+            <Button
+                android:id="@+id/btnClear"
+                style="@style/GreyButtonStyle"
+                android:onClick="@{() -> calcViewModel.clear()}"
+                android:text="@string/clear"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnBack"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnDot" />
+
+            <Button
+                android:id="@+id/btnBack"
+                style="@style/GreyButtonStyle"
+                android:text="@string/bs"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnNegate"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btnClear"
+                app:layout_constraintTop_toBottomOf="@+id/btn0" />
+
+            <Button
+                android:id="@+id/btnNegate"
+                style="@style/OperationButtonStyle"
+                android:text="@string/neg"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/calc"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btnBack"
+                app:layout_constraintTop_toBottomOf="@+id/btnPercent" />
+
+            <Button
+                android:id="@+id/calc"
+                android:layout_width="@dimen/button_size_portrait"
+                android:layout_height="@dimen/button_size_portrait"
+                android:backgroundTint="#1991FF"
+                android:fontFamily="Poppins"
+                android:gravity="center"
+                android:text="@string/calc"
+                android:textColor="#B2DAFF"
+                android:textSize="@dimen/button_text_size_portrait"
+                app:cornerRadius="90dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btnNegate"
+                app:layout_constraintTop_toBottomOf="@+id/div" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
