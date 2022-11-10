@@ -227,6 +227,7 @@
             <Button
                 android:id="@+id/btnPercent"
                 style="@style/OperationButtonStyle"
+                android:onClick="@{() -> calcViewModel.percent()}"
                 android:text="@string/per"
                 app:cornerRadius="90dp"
                 app:layout_constraintBottom_toTopOf="@+id/btnNegate"
