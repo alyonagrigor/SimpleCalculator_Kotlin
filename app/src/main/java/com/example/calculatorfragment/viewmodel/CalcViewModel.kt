@@ -267,43 +267,47 @@ class CalcViewModel : ViewModel() {
             _num2.value = 0.0
         }
     }
-//    fun backSpace() {
-//        if (_isBSAvailable.value == true && _stringInput.value.length > 3 //в строке могут быть пробел и
-//            // минус, поэтому безопасно стирать можно если больше 3 символов
-//            || _isBSAvailable.value == true && _stringInput.value.length == 2
-//        ) {
-//            //или если в строке осталось 2 символа, то есть 2 цифры без минуса
-//            _stringInput.value = _stringInput.value.substring(0, _stringInput.value.length - 1)
-//            _sHistory.value = _sHistory.value.dropLast(1)
-//
-//        } else if (_isBSAvailable.value == true
-//            && _stringInput.value.length == 3
-//            && _stringInput.value[1] != '-') {
-//            //если в строке 3 символа и второй - не минус, то можно стирать последний
-//            //символ безопасно
-//            _stringInput.value = _stringInput.value.substring(0, 2)
-//            _sHistory.value = _sHistory.value.dropLast(1)
-//
-//        } else if (_isBSAvailable.value == true
-//            && _stringInput.value.length == 3
-//            && _stringInput.value[1] == '-') {
-//            //если в строке 3 символа и второй - минус, то можно стирать все 3 символа:
-//            //цифру, минус, пробел
-//            _stringInput.value = "0"
-//            _sHistory.value = _sHistory.value.dropLast(3)
-//            _isBSAvailable.value = false
-//
-//        } else if (_isBSAvailable.value == true
-//            && _stringInput.value.length == 1) {
-//            //если в строке осталась только 1 цифра, заменяем ее на ноль
-//            _stringInput.value = "0"
-//            _sHistory.value = _sHistory.value.dropLast(1)
-//            _isBSAvailable.value = false
-//        }
-//        _showInput.value = _stringInput.value
-//    }
-//
-//
+
+    fun backspace() {
+
+        /*учитываем, что может в строке stringInput может находиться отрицательное число,
+        * тогда перед числом стоит знак пробел и знак минус*/
+        if (_isBSAvailable.value == true && _stringInput.value!!.length > 3 //если больше 3 символов,
+            //то неважно, есть ли минус, просто удаляем последнюю цифру
+            || _isBSAvailable.value == true && _stringInput.value!!.length == 2
+        ) {
+            //если в строке осталось 2 символа, то минуса точно нет
+            _stringInput.value = _stringInput.value!!.dropLast(1)
+            _sHistory.value = _sHistory.value!!.dropLast(1)
+
+        } else if (_isBSAvailable.value == true
+            && _stringInput.value!!.length == 3
+            && _stringInput.value!!.get(1) != '-') {
+            //если в строке 3 символа и второй - не минус, то можно стирать последний
+            //символ безопасно
+            _stringInput.value = _stringInput.value!!.dropLast(1)
+            _sHistory.value = _sHistory.value!!.dropLast(1)
+
+        } else if (_isBSAvailable.value == true
+            && _stringInput.value!!.length == 3
+            && _stringInput.value!!.get(1) != '-') {
+            //если в строке 3 символа и второй - минус, то можно стирать все 3 символа:
+            //цифру, минус, пробел
+            _stringInput.value = "0"
+            _sHistory.value = _sHistory.value!!.dropLast(3)
+            _isBSAvailable.value = false
+
+        } else if (_isBSAvailable.value == true
+            && _stringInput.value!!.length == 1) {
+            //если в строке осталась только 1 цифра, заменяем ее на ноль
+            _stringInput.value = "0"
+            _sHistory.value = _sHistory.value!!.dropLast(1)
+            _isBSAvailable.value = false
+        }
+        _showInput.value = _stringInput.value
+    }
+
+
 //    fun negate() {
 //        if (_hasNum1.value == false
 //            && _stringInput.value == "") { //если еще не была введена ни одна цифра

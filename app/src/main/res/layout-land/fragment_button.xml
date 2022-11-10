@@ -247,6 +247,7 @@
             <Button
                 android:id="@+id/btnBack"
                 style="@style/GreyButtonLandscape"
+                android:onClick="@{() -> calcViewModel.backspace()}"
                 android:text="@string/bs"
                 app:cornerRadius="90dp"
                 app:layout_constraintBottom_toBottomOf="parent"
