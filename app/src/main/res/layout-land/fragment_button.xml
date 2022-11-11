@@ -258,6 +258,7 @@
             <Button
                 android:id="@+id/btnNegate"
                 style="@style/OperationButtonLandscape"
+                android:onClick="@{() -> calcViewModel.negate()}"
                 android:text="@string/neg"
                 app:cornerRadius="90dp"
                 app:layout_constraintBottom_toBottomOf="parent"
