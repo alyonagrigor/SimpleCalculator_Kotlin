@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:fontFamily="Poppins"
             android:lines="2"
-            android:text="@{calcViewModel.sHistory}"
+            android:text="@{calcViewModel.journal}"
             android:textAlignment="viewEnd"
             android:textSize="@dimen/journal_text_size_portrait" />
     </androidx.constraintlayout.widget.ConstraintLayout>

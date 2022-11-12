@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="Poppins"
-            android:text="@{calcViewModel.sHistory}"
+            android:text="@{calcViewModel.journal}"
             android:textSize="@dimen/journal_text_size_landscape" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
