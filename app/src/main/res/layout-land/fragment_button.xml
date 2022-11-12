@@ -9,7 +9,6 @@
     android:layout_marginBottom="@dimen/button_fragment_margin">
 
     <data>
-
         <variable
             name="calcViewModel"
             type="com.example.calculatorfragment.viewmodel.CalcViewModel" />
@@ -21,8 +20,6 @@
             android:id="@+id/etInput"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
             android:ems="10"
             android:fontFamily="Poppins"
             android:inputType="number"

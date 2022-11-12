@@ -6,7 +6,7 @@ package com.example.calculatorfragment.viewmodel
 1. Структура приложения.
 Приложение состоит из одной активити, двух фрагментов (ButtonFragment и JournalFragment) и Shared
 ViewModel. В горизонтальной ориентации JournalFragment находится слева и занимает
-половину экрана, в портретной ориентации находится сверху.
+2/3 экрана, в портретной ориентации находится сверху.
 Приложение содержит отдельные layout для портретной и альбомной ориентации, а также dimens для
 планшетов sw600dp и sw720dp.
 В файле styles.xml заданы стили для кнопок.
@@ -430,7 +430,7 @@ class CalcViewModel : ViewModel() {
             _stringInput.value =
                 _stringInput.value!!.drop(1) //обрезаем минус в строке _stringInput.value
             _showInput.value = _stringInput.value
-            _journal.value = _stringInput.value //записываем результат в sHistory
+            _journal.value = _stringInput.value //записываем результат в journal
 
 
             /*если Negate нажимают когда ввели первое число положительное*/
@@ -440,7 +440,7 @@ class CalcViewModel : ViewModel() {
             _stringInput.value =
                 "-" + _stringInput.value //добавляем минус в строке _stringInput.value
             _showInput.value = _stringInput.value
-            _journal.value = "\u200b" + _stringInput.value //записываем результат в sHistory
+            _journal.value = "\u200b" + _stringInput.value //записываем результат в journal
 
 
             /*если введенное в строке число - результат предыдущих вычислений*/
@@ -451,7 +451,7 @@ class CalcViewModel : ViewModel() {
             _stringInput.value = _showInput.value //получаем значение из текстового поля
 
             /*т.к. цепочка вычислений перезатирается, стираем историю предыдущих операций
-            в sHistory*/
+            в journal*/
             _journal.value = ""
 
             /*если в результате предыдущих операций получили отриц. число*/
@@ -464,7 +464,7 @@ class CalcViewModel : ViewModel() {
                     "-" + _stringInput.value //добавляем минус в строке _stringInput.value
             }
             _showInput.value = _stringInput.value
-            _journal.value = _stringInput.value //записываем результат в sHistory
+            _journal.value = _stringInput.value //записываем результат в journal
             _operator.value = '0'
             _hasNum1.value = false
 
@@ -480,7 +480,7 @@ class CalcViewModel : ViewModel() {
             _stringInput.value =
                 "-$_stringInput.value" //добавляем минус в строке _stringInput.value
 
-            /*и вставляем снова в sHistory вместе с пробелом и добавляем скобки*/
+            /*и вставляем снова в journal вместе с пробелом и добавляем скобки*/
             _journal.value = _journal.value.plus("\u200b").plus("($_stringInput.value)")
 
 

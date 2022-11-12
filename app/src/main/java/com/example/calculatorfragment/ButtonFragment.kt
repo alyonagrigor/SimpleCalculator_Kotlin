@@ -37,14 +37,14 @@ class ButtonFragment: Fragment(R.layout.fragment_button) {
 
         binding.setLifecycleOwner(this)
 
-        viewModel.showToast1.observe(viewLifecycleOwner, Observer { doShow ->
+        viewModel.showToast1.observe(viewLifecycleOwner, { doShow ->
             if (doShow) {
                 showToastFirstDigit()
                 viewModel.onToast1ShownComplete()
             }
         })
 
-        viewModel.showToast2.observe(viewLifecycleOwner, Observer { doShow ->
+        viewModel.showToast2.observe(viewLifecycleOwner, { doShow ->
             if (doShow) {
                 showToastNextDigit()
                 viewModel.onToast2ShownComplete()
@@ -54,11 +54,11 @@ class ButtonFragment: Fragment(R.layout.fragment_button) {
         return binding.root
     }
 
-    fun showToastFirstDigit() {
+    private fun showToastFirstDigit() {
         Toast.makeText(activity, "Введите хотя бы одно число", Toast.LENGTH_LONG).show()
     }
 
-    fun showToastNextDigit() {
+    private fun showToastNextDigit() {
         Toast.makeText(activity, "Введите следующее число", Toast.LENGTH_LONG).show()
     }
 
