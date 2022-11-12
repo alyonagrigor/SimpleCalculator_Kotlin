@@ -78,7 +78,6 @@ class CalcViewModel : ViewModel() {
         _sHistory.value += n
         _isLastPressedOperation.value = false
         _isBSAvailable.value = true
-        Log.d("myTag", "введено число $n")
     }
 
     /*кнопка точка*/
@@ -139,9 +138,9 @@ class CalcViewModel : ViewModel() {
     /* кнопка равно */
     fun calc() {
         if (_hasNum1.value == false && _stringInput.value == "") {
-            //TODO  showToastFirstDigit() //если еще ничего не введено
+            _showToast1.value = true //если еще ничего не введено
         } else if (_hasNum1.value == false || _stringInput.value == "") {
-            //TODO showToastNextDigit() //если нет _num1, либо нет правого операнда
+            _showToast2.value = true //если нет _num1, либо нет правого операнда
         } else {
             operationCalc()
             _operator.value = '0'
@@ -156,7 +155,7 @@ class CalcViewModel : ViewModel() {
         if (_hasNum1.value == false
             && _stringInput.value == ""
         ) {
-            //TODO  showToastFirstDigit()
+            _showToast1.value = true
         } else if (_hasNum1.value == false) {
             Log.d("myTag", "запущен вариант 2")
             //если в строке _sInput записано число, но оператор и _num1 еще не записан
@@ -230,7 +229,7 @@ class CalcViewModel : ViewModel() {
     fun percent() {
 
         if (_hasNum1.value == false && _stringInput.value == "") {
-            //TODO    showToastFirstDigit() // если не введено ни одно число и не нажата ни одна
+            _showToast1.value = true // если не введено ни одно число и не нажата ни одна
             // арифметическая операция
 
         } else if (_hasNum1.value == false) { //если введено только 1 число, а кнопка арифметической операции
@@ -249,7 +248,7 @@ class CalcViewModel : ViewModel() {
 
         } else if (_stringInput.value == "" && _isLastPressedOperation.value == true) {
             //если есть _num1.value и оператор, но правого операнда нет - то выводим подсказку
-            //TODO showToastNextDigit()
+            _showToast2.value = true
 
         } else if (_stringInput.value != ""
             && _operator.value != '0'
@@ -319,14 +318,11 @@ class CalcViewModel : ViewModel() {
             && _stringInput.value == ""
         ) { //если еще не была введена ни одна цифра
 
-            //TODO   showToastFirstDigit()
+            _showToast1.value = true
 
         } else if (_isLastPressedOperation.value == true) {
             //если нажат арифметический оператор, а новое число не введено
-
-            //TODO тут пропадает число из строки
-
-            //TODO  showToastNextDigit()
+            _showToast2.value = true
 
         } else if (_hasNum1.value == false
             && _stringInput.value!!.get(0) == '-'
@@ -397,6 +393,14 @@ class CalcViewModel : ViewModel() {
         _showInput.value = _stringInput.value
         _isLastPressedOperation.value = false
         _isBSAvailable.value = false
+    }
+
+    fun onToast1ShownComplete() {
+        _showToast1.value = false
+    }
+
+    fun onToast2ShownComplete() {
+        _showToast2.value = false
     }
 
 
