@@ -411,7 +411,7 @@ class CalcViewModel : ViewModel() {
 
     fun negate() {
 
-        /*если еще не была введена ни одна цифра*/
+            /*если еще не была введена ни одна цифра*/
         if (_hasNum1.value == false
             && _stringInput.value == ""
         ) {
@@ -478,10 +478,11 @@ class CalcViewModel : ViewModel() {
             val x = _stringInput.value!!.length
             _journal.value = _journal.value!!.dropLast(x) //обрезаем
             _stringInput.value =
-                "-$_stringInput.value" //добавляем минус в строке _stringInput.value
+                "-" + _stringInput.value //добавляем минус в строке _stringInput.value
 
             /*и вставляем снова в journal вместе с пробелом и добавляем скобки*/
-            _journal.value = _journal.value.plus("\u200b").plus("($_stringInput.value)")
+            _journal.value = _journal.value.plus("\u200b(")
+                .plus(_stringInput.value). plus(")")
 
 
             /*проверяем, что сейчас в строке отрицательное число, тогда убираем минус*/
