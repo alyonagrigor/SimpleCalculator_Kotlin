@@ -4,15 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.os.Bundle
 import android.view.View
-import com.example.calculatorfragment.R
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.calculatorfragment.databinding.FragmentButtonBinding
 import com.example.calculatorfragment.databinding.FragmentJournalBinding
 import com.example.calculatorfragment.viewmodel.CalcViewModel
-import java.lang.StringBuilder
 
 class JournalFragment : Fragment(R.layout.fragment_journal) {
 
@@ -36,7 +32,7 @@ class JournalFragment : Fragment(R.layout.fragment_journal) {
 
         binding.calcViewModel = viewModel
 
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
 
         return binding.root
     }

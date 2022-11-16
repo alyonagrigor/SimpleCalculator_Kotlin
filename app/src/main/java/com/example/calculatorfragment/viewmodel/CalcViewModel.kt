@@ -380,7 +380,7 @@ class CalcViewModel : ViewModel() {
             /*если в строке 3 символа и второй - не минус, то последний символ можно стирать*/
         } else if (_isBsAvailable.value == true
             && _stringInput.value!!.length == 3
-            && _stringInput.value!!.get(1) != '-'
+            && _stringInput.value!![1] != '-'
         ) {
             _stringInput.value = _stringInput.value!!.dropLast(1)
             _journal.value = _journal.value!!.dropLast(1)
@@ -390,7 +390,7 @@ class CalcViewModel : ViewModel() {
             цифру, минус, пробел*/
         } else if (_isBsAvailable.value == true
             && _stringInput.value!!.length == 3
-            && _stringInput.value!!.get(1) != '-'
+            && _stringInput.value!![1] != '-'
         ) {
             _stringInput.value = "0"
             _journal.value = _journal.value!!.dropLast(3)
@@ -425,7 +425,7 @@ class CalcViewModel : ViewModel() {
 
             /*если Negate нажимают когда ввели первое число отрицательное кнопкой минус*/
         } else if (_hasNum1.value == false
-            && _stringInput.value!!.get(0) == '-'
+            && _stringInput.value!![0] == '-'
         ) {
             _stringInput.value =
                 _stringInput.value!!.drop(1) //обрезаем минус в строке _stringInput.value
@@ -435,7 +435,7 @@ class CalcViewModel : ViewModel() {
 
             /*если Negate нажимают когда ввели первое число положительное*/
         } else if (_hasNum1.value == false
-            && _stringInput.value!!.get(0) != '-'
+            && _stringInput.value!![0] != '-'
         ) {
             _stringInput.value =
                 "-" + _stringInput.value //добавляем минус в строке _stringInput.value
@@ -455,11 +455,11 @@ class CalcViewModel : ViewModel() {
             _journal.value = ""
 
             /*если в результате предыдущих операций получили отриц. число*/
-            if (_stringInput.value!!.get(0) == '-') {
+            if (_stringInput.value!![0] == '-') {
                 _stringInput.value =
                     _stringInput.value!!.drop(1) //обрезаем минус в строке _stringInput.value
 
-            } else if (_stringInput.value!!.get(0) != '-') {
+            } else if (_stringInput.value!![0] != '-') {
                 _stringInput.value =
                     "-" + _stringInput.value //добавляем минус в строке _stringInput.value
             }
@@ -471,7 +471,7 @@ class CalcViewModel : ViewModel() {
 
             /*если Negate нажат после числа по ходу вычислений*/
             /*проверяем, что сейчас в строке положительное число, тогда добавляем минус*/
-        } else if (_stringInput.value!!.get(0) != '-'
+        } else if (_stringInput.value!![0] != '-'
             && _operator.value != '0'
         ) {
             /*получаем длину числа в строке, чтобы обрезать его из истории*/
@@ -486,7 +486,7 @@ class CalcViewModel : ViewModel() {
 
 
             /*проверяем, что сейчас в строке отрицательное число, тогда убираем минус*/
-        } else if (_stringInput.value!!.get(0) == '-' && _operator.value != '0') {
+        } else if (_stringInput.value!![0] == '-' && _operator.value != '0') {
             /*получаем длину числа в строке, чтобы обрезать его из истории*/
             val x = _stringInput.value!!.length
             _journal.value = _journal.value!!.dropLast(x) //обрезаем
