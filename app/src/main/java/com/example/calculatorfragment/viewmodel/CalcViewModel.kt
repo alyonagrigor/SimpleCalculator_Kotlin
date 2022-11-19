@@ -288,7 +288,7 @@ class CalcViewModel : ViewModel() {
             '/' -> _num1.value = _num1.value?.div(_num2.value!!)
         }
 
-        output(_num1.value!!)
+        output(_num1.value)
 
         /*обнуляем _num2, чтобы потом получить новое значение во время следующей операции*/
         _num2.value = 0.0
@@ -296,7 +296,7 @@ class CalcViewModel : ViewModel() {
     }
 
     /*выводим результат в _showInput, обрезаем .0, если есть*/
-    private fun output(d: Double) {
+    private fun output(d: Double?) {
 
         var sD = d.toString()
         if (sD.endsWith(".0")) {
@@ -321,11 +321,11 @@ class CalcViewModel : ViewModel() {
             рассчитать 1 процент*/
         } else if (_hasNum1.value == false) {
 
-            _num1.value = _stringInput.value!!.toDouble()
+            _num1.value = _stringInput.value?.toDouble()
             _journal.value =
                 _journal.value + "\u200b * 1% \u200b" //записываем в историю, что мы рассчитали 1%
-            _num2.value = _num1.value!!.div(100)
-            output(_num2.value!!) //обрезаем ноль, если нужно, и выводим в строке showInput
+            _num2.value = _num1.value?.div(100)
+            output(_num2.value) //обрезаем ноль, если нужно, и выводим в строке showInput
             _isLastPressedOperation.value = false
             _isBsAvailable.value = false
             _stringInput.value = _num2.value.toString() //передаем результат в _stringInput.value
@@ -348,7 +348,7 @@ class CalcViewModel : ViewModel() {
 
         ) {
             /*сначала вычисляем _num2.value процентов от _num1.value и перезаписываем _num2.value*/
-            _num2.value = _stringInput.value!!.toDouble()
+            _num2.value = _stringInput.value?.toDouble()
             _num2.value = _num2.value!! * _num1.value!!.div(100)
             _stringInput.value = _num2.value.toString()
             operationCalc() //выполняем заданную арифм. операцию
@@ -368,41 +368,46 @@ class CalcViewModel : ViewModel() {
 
         /*если в строке _stringInput больше 3 символов, то неважно, есть ли минус,
         просто удаляем последнюю цифру*/
-        if (_isBsAvailable.value == true && _stringInput.value!!.length > 3
+
+        /*вычисляем длину строки*/
+        val length = _stringInput.value?.length ?: -1
+        val secondChar = _stringInput.value?.get(1) ?: '1'
+
+        if (_isBsAvailable.value == true && length > 3
 
             /*либо если в строке осталось 2 символа, то минуса точно нет*/
-            || _isBsAvailable.value == true && _stringInput.value!!.length == 2
+            || _isBsAvailable.value == true && length == 2
         ) {
-            _stringInput.value = _stringInput.value!!.dropLast(1)
-            _journal.value = _journal.value!!.dropLast(1)
+            _stringInput.value = _stringInput.value?.dropLast(1)
+            _journal.value = _journal.value?.dropLast(1)
 
 
             /*если в строке 3 символа и второй - не минус, то последний символ можно стирать*/
         } else if (_isBsAvailable.value == true
-            && _stringInput.value!!.length == 3
-            && _stringInput.value!![1] != '-'
+            && length == 3
+            && secondChar != '-'
         ) {
-            _stringInput.value = _stringInput.value!!.dropLast(1)
-            _journal.value = _journal.value!!.dropLast(1)
+            _stringInput.value = _stringInput.value?.dropLast(1)
+            _journal.value = _journal.value?.dropLast(1)
 
 
             /*если в строке 3 символа и второй - минус, то нужно стирать все 3 символа:
             цифру, минус, пробел*/
         } else if (_isBsAvailable.value == true
-            && _stringInput.value!!.length == 3
-            && _stringInput.value!![1] != '-'
+            && length == 3
+            && secondChar != '-'
         ) {
             _stringInput.value = "0"
-            _journal.value = _journal.value!!.dropLast(3)
+            _journal.value = _journal.value?.dropLast(3)
             _isBsAvailable.value = false
 
 
             /*если в строке осталась только 1 цифра, заменяем ее на ноль*/
         } else if (_isBsAvailable.value == true
-            && _stringInput.value!!.length == 1
+            && length == 1
         ) {
             _stringInput.value = "0"
-            _journal.value = _journal.value!!.dropLast(1)
+            _journal.value = _journal.value?.dropLast(1)
             _isBsAvailable.value = false
         }
         _showInput.value = _stringInput.value
@@ -415,27 +420,31 @@ class CalcViewModel : ViewModel() {
         if (_hasNum1.value == false
             && _stringInput.value == ""
         ) {
-            _showToast1.value = true
+            _showToast1.value = true //выводим подсказку
+
+        /*если строка не пустая, то получаем первый символ*/
+
+        val firstChar = _stringInput.value?.get(0) ?: 'E'
 
 
-            /*если нажат арифметический оператор, а новое число не введено*/
-        } else if (_isLastPressedOperation.value == true) {
+        /*если нажат арифметический оператор, а новое число не введено*/
+        if (_isLastPressedOperation.value == true) {
             _showToast2.value = true
 
 
             /*если Negate нажимают когда ввели первое число отрицательное кнопкой минус*/
         } else if (_hasNum1.value == false
-            && _stringInput.value!![0] == '-'
+            && firstChar == '-'
         ) {
             _stringInput.value =
-                _stringInput.value!!.drop(1) //обрезаем минус в строке _stringInput.value
+                _stringInput.value?.drop(1) //обрезаем минус в строке _stringInput.value
             _showInput.value = _stringInput.value
             _journal.value = _stringInput.value //записываем результат в journal
 
 
             /*если Negate нажимают когда ввели первое число положительное*/
         } else if (_hasNum1.value == false
-            && _stringInput.value!![0] != '-'
+            && firstChar != '-'
         ) {
             _stringInput.value =
                 "-" + _stringInput.value //добавляем минус в строке _stringInput.value
@@ -455,11 +464,11 @@ class CalcViewModel : ViewModel() {
             _journal.value = ""
 
             /*если в результате предыдущих операций получили отриц. число*/
-            if (_stringInput.value!![0] == '-') {
+            if (firstChar == '-') {
                 _stringInput.value =
-                    _stringInput.value!!.drop(1) //обрезаем минус в строке _stringInput.value
+                    _stringInput.value?.drop(1) //обрезаем минус в строке _stringInput.value
 
-            } else if (_stringInput.value!![0] != '-') {
+            } else if (firstChar != '-') {
                 _stringInput.value =
                     "-" + _stringInput.value //добавляем минус в строке _stringInput.value
             }
@@ -471,12 +480,12 @@ class CalcViewModel : ViewModel() {
 
             /*если Negate нажат после числа по ходу вычислений*/
             /*проверяем, что сейчас в строке положительное число, тогда добавляем минус*/
-        } else if (_stringInput.value!![0] != '-'
+        } else if (firstChar != '-'
             && _operator.value != '0'
         ) {
             /*получаем длину числа в строке, чтобы обрезать его из истории*/
-            val x = _stringInput.value!!.length
-            _journal.value = _journal.value!!.dropLast(x) //обрезаем
+            val x = _stringInput.value?.length ?: -1
+            _journal.value = _journal.value?.dropLast(x) //обрезаем
             _stringInput.value =
                 "-" + _stringInput.value //добавляем минус в строке _stringInput.value
 
@@ -486,12 +495,13 @@ class CalcViewModel : ViewModel() {
 
 
             /*проверяем, что сейчас в строке отрицательное число, тогда убираем минус*/
-        } else if (_stringInput.value!![0] == '-' && _operator.value != '0') {
+        } else if (firstChar == '-'
+            && _operator.value != '0') {
             /*получаем длину числа в строке, чтобы обрезать его из истории*/
-            val x = _stringInput.value!!.length
-            _journal.value = _journal.value!!.dropLast(x) //обрезаем
+            val y = _stringInput.value?.length ?: -1
+            _journal.value = _journal.value?.dropLast(y) //обрезаем
             _stringInput.value =
-                _stringInput.value!!.drop(1) //обрезаем минус в строке _stringInput.value
+                _stringInput.value?.drop(1) //обрезаем минус в строке _stringInput.value
         }
 
         _showInput.value = _stringInput.value //в конце выводим _stringInput.value в _showInput
@@ -499,14 +509,12 @@ class CalcViewModel : ViewModel() {
         _isBsAvailable.value = false
     }
 
-    /*event listener для toast*/
+    /*event listeners для toast*/
     fun onToast1ShownComplete() {
         _showToast1.value = false
     }
 
-    /*event listener для toast*/
     fun onToast2ShownComplete() {
         _showToast2.value = false
     }
-
 }
