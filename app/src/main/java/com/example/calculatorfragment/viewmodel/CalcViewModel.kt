@@ -361,59 +361,6 @@ class CalcViewModel : ViewModel() {
         }
     }
 
-//    fun backspace() {
-//
-//        /*учитываем, что может в строке stringInput может находиться отрицательное число,
-//        тогда перед числом стоит знак пробел и знак минус*/
-//
-//        /*если в строке _stringInput больше 3 символов, то неважно, есть ли минус,
-//        просто удаляем последнюю цифру*/
-//
-//        /*вычисляем длину строки*/
-//        val length = _stringInput.value?.length ?: -1
-//        val secondChar = _stringInput.value?.get(1) ?: '1'
-//
-//        if (_isBsAvailable.value == true && length > 3
-//
-//            /*либо если в строке осталось 2 символа, то минуса точно нет*/
-//            || _isBsAvailable.value == true && length == 2
-//        ) {
-//            _stringInput.value = _stringInput.value?.dropLast(1)
-//            _journal.value = _journal.value?.dropLast(1)
-//
-//
-//            /*если в строке 3 символа и второй - не минус, то последний символ можно стирать*/
-//        } else if (_isBsAvailable.value == true
-//            && length == 3
-//            && secondChar != '-'
-//        ) {
-//            _stringInput.value = _stringInput.value?.dropLast(1)
-//            _journal.value = _journal.value?.dropLast(1)
-//
-//
-//            /*если в строке 3 символа и второй - минус, то нужно стирать все 3 символа:
-//            цифру, минус, пробел*/
-//        } else if (_isBsAvailable.value == true
-//            && length == 3
-//            && secondChar != '-'
-//        ) {
-//            _stringInput.value = "0"
-//            _journal.value = _journal.value?.dropLast(3)
-//            _isBsAvailable.value = false
-//
-//
-//            /*если в строке осталась только 1 цифра, заменяем ее на ноль*/
-//        } else if (_isBsAvailable.value == true
-//            && length == 1
-//        ) {
-//            _stringInput.value = "0"
-//            _journal.value = _journal.value?.dropLast(1)
-//            _isBsAvailable.value = false
-//        }
-//        _showInput.value = _stringInput.value
-//    }
-
-
     fun backspace() {
 
         /*сначала проверяем, есть ли вообще возможность стереть символ из stringInput*/
@@ -422,12 +369,14 @@ class CalcViewModel : ViewModel() {
             /*учитываем, что в строке stringInput может находиться отрицательное число,
             тогда перед числом стоит знак пробел и знак минус*/
 
-            /*вычисляем длину строки и второй символ в строке*/
+            /*вычисляем длину строки*/
             val length = _stringInput.value?.length ?: -1
-            var secondChar = '+'
 
-            if (length >= 3) {
-                secondChar = _stringInput.value?.get(1) ?: '+'
+            /*вычисляем второй символ в строке только если символа три, в остальных случаях это
+            значение не нужно*/
+            val secondChar = when (length) {
+                3 -> _stringInput.value?.get(1)
+                else -> null
             }
 
             when {
