@@ -194,9 +194,9 @@ class CalcViewModel : ViewModel() {
     fun sub() {
         /*если нажать минус перед вводом первого числа, то число будет отрицательным*/
         if (_hasNum1.value == false && _stringInput.value == "") {
-            _stringInput.value += "-"
+            _stringInput.value = _stringInput.value.plus("\u200b-")
             _showInput.value = _stringInput.value
-            _journal.value = "-" + "\u200b"
+            _journal.value = _stringInput.value
             _isLastPressedOperation.value = false
             _isBsAvailable.value = true
 
@@ -361,58 +361,107 @@ class CalcViewModel : ViewModel() {
         }
     }
 
+//    fun backspace() {
+//
+//        /*учитываем, что может в строке stringInput может находиться отрицательное число,
+//        тогда перед числом стоит знак пробел и знак минус*/
+//
+//        /*если в строке _stringInput больше 3 символов, то неважно, есть ли минус,
+//        просто удаляем последнюю цифру*/
+//
+//        /*вычисляем длину строки*/
+//        val length = _stringInput.value?.length ?: -1
+//        val secondChar = _stringInput.value?.get(1) ?: '1'
+//
+//        if (_isBsAvailable.value == true && length > 3
+//
+//            /*либо если в строке осталось 2 символа, то минуса точно нет*/
+//            || _isBsAvailable.value == true && length == 2
+//        ) {
+//            _stringInput.value = _stringInput.value?.dropLast(1)
+//            _journal.value = _journal.value?.dropLast(1)
+//
+//
+//            /*если в строке 3 символа и второй - не минус, то последний символ можно стирать*/
+//        } else if (_isBsAvailable.value == true
+//            && length == 3
+//            && secondChar != '-'
+//        ) {
+//            _stringInput.value = _stringInput.value?.dropLast(1)
+//            _journal.value = _journal.value?.dropLast(1)
+//
+//
+//            /*если в строке 3 символа и второй - минус, то нужно стирать все 3 символа:
+//            цифру, минус, пробел*/
+//        } else if (_isBsAvailable.value == true
+//            && length == 3
+//            && secondChar != '-'
+//        ) {
+//            _stringInput.value = "0"
+//            _journal.value = _journal.value?.dropLast(3)
+//            _isBsAvailable.value = false
+//
+//
+//            /*если в строке осталась только 1 цифра, заменяем ее на ноль*/
+//        } else if (_isBsAvailable.value == true
+//            && length == 1
+//        ) {
+//            _stringInput.value = "0"
+//            _journal.value = _journal.value?.dropLast(1)
+//            _isBsAvailable.value = false
+//        }
+//        _showInput.value = _stringInput.value
+//    }
+
+
     fun backspace() {
 
-        /*учитываем, что может в строке stringInput может находиться отрицательное число,
-        тогда перед числом стоит знак пробел и знак минус*/
+        /*сначала проверяем, есть ли вообще возможность стереть символ из stringInput*/
+        if (_isBsAvailable.value == true) {
 
-        /*если в строке _stringInput больше 3 символов, то неважно, есть ли минус,
-        просто удаляем последнюю цифру*/
+            /*учитываем, что в строке stringInput может находиться отрицательное число,
+            тогда перед числом стоит знак пробел и знак минус*/
 
-        /*вычисляем длину строки*/
-        val length = _stringInput.value?.length ?: -1
-        val secondChar = _stringInput.value?.get(1) ?: '1'
+            /*вычисляем длину строки и второй символ в строке*/
+            val length = _stringInput.value?.length ?: -1
+            var secondChar = '+'
 
-        if (_isBsAvailable.value == true && length > 3
+            if (length >= 3) {
+                secondChar = _stringInput.value?.get(1) ?: '+'
+            }
 
-            /*либо если в строке осталось 2 символа, то минуса точно нет*/
-            || _isBsAvailable.value == true && length == 2
-        ) {
-            _stringInput.value = _stringInput.value?.dropLast(1)
-            _journal.value = _journal.value?.dropLast(1)
+            when {
+                /*если в строке _stringInput больше 3 символов, то неважно, есть ли минус, просто
+                удаляем последнюю цифру; либо если в строке осталось 2 символа, то минуса точно нет*/
+                length > 3 || length == 2 -> {
+                    _stringInput.value = _stringInput.value?.dropLast(1)
+                    _journal.value = _journal.value?.dropLast(1)
+                }
 
+                /*если в строке 3 символа и второй - не минус, то последний символ можно стирать*/
+                length == 3 && secondChar != '-' -> {
+                    _stringInput.value = _stringInput.value?.dropLast(1)
+                    _journal.value = _journal.value?.dropLast(1)
+                }
 
-            /*если в строке 3 символа и второй - не минус, то последний символ можно стирать*/
-        } else if (_isBsAvailable.value == true
-            && length == 3
-            && secondChar != '-'
-        ) {
-            _stringInput.value = _stringInput.value?.dropLast(1)
-            _journal.value = _journal.value?.dropLast(1)
+                /*если в строке 3 символа и второй - минус, то нужно стирать все 3 символа:
+                цифру, минус, пробел*/
+                length == 3 && secondChar == '-' -> {
+                    _stringInput.value = "0"
+                    _journal.value = _journal.value?.dropLast(3)
+                    _isBsAvailable.value = false
+                }
 
-
-            /*если в строке 3 символа и второй - минус, то нужно стирать все 3 символа:
-            цифру, минус, пробел*/
-        } else if (_isBsAvailable.value == true
-            && length == 3
-            && secondChar != '-'
-        ) {
-            _stringInput.value = "0"
-            _journal.value = _journal.value?.dropLast(3)
-            _isBsAvailable.value = false
-
-
-            /*если в строке осталась только 1 цифра, заменяем ее на ноль*/
-        } else if (_isBsAvailable.value == true
-            && length == 1
-        ) {
-            _stringInput.value = "0"
-            _journal.value = _journal.value?.dropLast(1)
-            _isBsAvailable.value = false
+                /*если в строке осталась только 1 цифра, заменяем ее на ноль*/
+                length == 1 -> {
+                    _stringInput.value = "0"
+                    _journal.value = _journal.value?.dropLast(1)
+                    _isBsAvailable.value = false
+                }
+            }
+            _showInput.value = _stringInput.value
         }
-        _showInput.value = _stringInput.value
     }
-
 
     fun negate() {
 
