@@ -420,93 +420,113 @@ class CalcViewModel : ViewModel() {
         ) {
             _showToast1.value = true //выводим подсказку
 
-            /*если строка не пустая, то получаем первый символ*/
+        } else {
 
-            val firstChar = _stringInput.value?.get(0) ?: 'E'
-
-
-            /*если нажат арифметический оператор, а новое число не введено*/
-            if (_isLastPressedOperation.value == true) {
-                _showToast2.value = true
-
-
-                /*если Negate нажимают когда ввели первое число отрицательное кнопкой минус*/
-            } else if (_hasNum1.value == false
-                && firstChar == '-'
-            ) {
-                _stringInput.value =
-                    _stringInput.value?.drop(1) //обрезаем минус в строке _stringInput.value
-                _showInput.value = _stringInput.value
-                _journal.value = _stringInput.value //записываем результат в journal
-
-
-                /*если Negate нажимают когда ввели первое число положительное*/
-            } else if (_hasNum1.value == false
-                && firstChar != '-'
-            ) {
-                _stringInput.value =
-                    "-" + _stringInput.value //добавляем минус в строке _stringInput.value
-                _showInput.value = _stringInput.value
-                _journal.value = "\u200b" + _stringInput.value //записываем результат в journal
-
-
-                /*если введенное в строке число - результат предыдущих вычислений*/
-            } else if (_hasNum1.value == true
-                && _stringInput.value == ""
-                && _showInput.value != ""
-            ) {
-                _stringInput.value = _showInput.value //получаем значение из текстового поля
-
-                /*т.к. цепочка вычислений перезатирается, стираем историю предыдущих операций
-                в journal*/
-                _journal.value = ""
-
-                /*если в результате предыдущих операций получили отриц. число*/
-                if (firstChar == '-') {
-                    _stringInput.value =
-                        _stringInput.value?.drop(1) //обрезаем минус в строке _stringInput.value
-
-                } else if (firstChar != '-') {
-                    _stringInput.value =
-                        "-" + _stringInput.value //добавляем минус в строке _stringInput.value
-                }
-                _showInput.value = _stringInput.value
-                _journal.value = _stringInput.value //записываем результат в journal
-                _operator.value = '0'
-                _hasNum1.value = false
-
-
-                /*если Negate нажат после числа по ходу вычислений*/
-                /*проверяем, что сейчас в строке положительное число, тогда добавляем минус*/
-            } else if (firstChar != '-'
-                && _operator.value != '0'
-            ) {
-                /*получаем длину числа в строке, чтобы обрезать его из истории*/
-                val x = _stringInput.value?.length ?: -1
-                _journal.value = _journal.value?.dropLast(x) //обрезаем
-                _stringInput.value =
-                    "-" + _stringInput.value //добавляем минус в строке _stringInput.value
-
-                /*и вставляем снова в journal вместе с пробелом и добавляем скобки*/
-                _journal.value = _journal.value.plus("\u200b(")
-                    .plus(_stringInput.value).plus(")")
-
-
-                /*проверяем, что сейчас в строке отрицательное число, тогда убираем минус*/
-            } else if (firstChar == '-'
-                && _operator.value != '0'
-            ) {
-                /*получаем длину числа в строке, чтобы обрезать его из истории*/
-                val y = _stringInput.value?.length ?: -1
-                _journal.value = _journal.value?.dropLast(y) //обрезаем
-                _stringInput.value =
-                    _stringInput.value?.drop(1) //обрезаем минус в строке _stringInput.value
+            /*если строка не пустая, то получаем второй символ, который может быть минусом*/
+            val stringLengthNegate = _stringInput.value?.length ?: -1
+            val secondCharNegate = when (stringLengthNegate) {
+                in -1..2 -> null //если минус есть, то символов в строке 3 или больше, короткие
+                // строки нас не интересуют
+                else -> _stringInput.value?.get(1)
             }
 
-            _showInput.value = _stringInput.value //в конце выводим _stringInput.value в _showInput
+            when {
+                /*если нажат арифметический оператор, а новое число не введено*/
+                _isLastPressedOperation.value == true -> _showToast2.value = true
+
+
+                /*если Negate нажимают когда ввели первое число, и оно отрицательное */
+                _hasNum1.value == false
+                        && secondCharNegate == '-' -> {
+                    _stringInput.value =
+                        _stringInput.value?.drop(2) //обрезаем минус, пробел в строке _stringInput
+                    _journal.value = _stringInput.value
+                }
+
+
+                /*если Negate нажимают когда ввели первое число, и оно положительное*/
+                _hasNum1.value == false
+                        && secondCharNegate != '-' -> {
+                    _stringInput.value =
+                        "\u200B-" + _stringInput.value //добавляем минус в строке _stringInput.value
+                    _journal.value = _stringInput.value
+                }
+
+                /*если кнопка negate нажата после числа по ходу вычислений и в строке положительное
+                число,то добавляем минус*/
+                _operator.value != '0'
+                        && secondCharNegate != '-' -> {
+
+                    /*зная длину строки _stringInput, вырезаем текущее число из истории*/
+                    _journal.value = _journal.value?.dropLast(stringLengthNegate)
+
+                    /*добавляем минус и пробел в строке _stringInput*/
+                    _stringInput.value = "\u200B-" + _stringInput.value
+
+                    /*вставляем снова в journal и добавляем скобки*/
+                    _journal.value =
+                        _journal.value.plus("(").plus(_stringInput.value).plus(")")
+                }
+
+
+                /*если кнопка negate нажата после числа по ходу вычислений и в строке отрицательное
+                число, тогда убираем минус*/
+
+                _operator.value != '0'
+                        && secondCharNegate == '-' -> {
+
+                    /*зная длину строки _stringInput, вырезаем текущее число из истории со скобками*/
+                    _journal.value = _journal.value?.dropLast(stringLengthNegate + 2)
+
+                    _stringInput.value =
+                        _stringInput.value?.drop(2) //обрезаем минус в строке _stringInput.value
+
+                    /*вставляем снова в journal*/
+                    _journal.value = _journal.value.plus(_stringInput.value)
+                }
+
+
+                /*если кнопка negate нажата тогда, когда выведенное в строке showInput число -
+                результат предыдущих вычислений*/
+                _hasNum1.value == true
+                        && _stringInput.value == ""
+                        && _showInput.value != ""
+                -> {
+                    negateForResult()
+                }
+            }
+
+            /*в конце функции negate() выводим _stringInput в _showInput и перезаписываем
+            переменные*/
+            _showInput.value = _stringInput.value
             _isLastPressedOperation.value = false
             _isBsAvailable.value = false
         }
+    }
+
+
+    private fun negateForResult() {
+
+        _stringInput.value = _showInput.value //получаем значение из _showInput
+
+        /*т.к. здесь не будет пробела перед минусом, получаем из строки 1-й символ*/
+        val firstCharNegate = _stringInput.value?.get(0)
+
+        /*если в результате предыдущих операций получили отриц. число*/
+        if (firstCharNegate == '-') {
+            _stringInput.value =
+                _stringInput.value?.drop(1) //обрезаем минус в строке _stringInput
+
+            /*если в результате предыдущих операций получили положит. число*/
+        } else if (firstCharNegate != '-') {
+            _stringInput.value =
+                "\u200b".plus("-").plus(_stringInput.value) //добавляем минус, пробел в _stringInput
+        }
+
+        /*т.к. цепочка вычислений перезатирается, обнуляем */
+        _operator.value = '0'
+        _hasNum1.value = false
+        _journal.value = _stringInput.value //и перезаписываем journal, удаляя старые данные
     }
 
     /*event listeners для toast*/
@@ -517,4 +537,5 @@ class CalcViewModel : ViewModel() {
     fun onToast2ShownComplete() {
         _showToast2.value = false
     }
+
 }
