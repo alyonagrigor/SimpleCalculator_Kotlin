@@ -435,22 +435,9 @@ class CalcViewModel : ViewModel() {
                 _isLastPressedOperation.value == true -> _showToast2.value = true
 
 
-                /*если Negate нажимают когда ввели первое число, и оно отрицательное */
-                _hasNum1.value == false
-                        && secondCharNegate == '-' -> {
-                    _stringInput.value =
-                        _stringInput.value?.drop(2) //обрезаем минус, пробел в строке _stringInput
-                    _journal.value = _stringInput.value
-                }
+                /*если Negate нажимают когда ввели первое число */
+                _hasNum1.value == false -> negateWhenFirst(secondCharNegate)
 
-
-                /*если Negate нажимают когда ввели первое число, и оно положительное*/
-                _hasNum1.value == false
-                        && secondCharNegate != '-' -> {
-                    _stringInput.value =
-                        "\u200B-" + _stringInput.value //добавляем минус в строке _stringInput
-                    _journal.value = _stringInput.value
-                }
 
                 /*если кнопка negate нажата после числа по ходу вычислений*/
                 _operator.value != '0'
@@ -467,13 +454,29 @@ class CalcViewModel : ViewModel() {
                 }
             }
 
-/*в конце функции negate() выводим _stringInput в _showInput и перезаписываем
-переменные*/
+            /*в конце функции negate() выводим _stringInput в _showInput и перезаписываем
+            переменные*/
             _showInput.value = _stringInput.value
             _isLastPressedOperation.value = false
             _isBsAvailable.value = false
         }
     }
+
+    private fun negateWhenFirst(secondCharNegate: Char?) {
+
+        /*если число в строке отрицательное*/
+        if (secondCharNegate == '-') {
+            _stringInput.value =
+                _stringInput.value?.drop(2) //обрезаем минус, пробел в строке _stringInput
+            _journal.value = _stringInput.value
+
+        } else {
+            _stringInput.value =
+                "\u200B-" + _stringInput.value //добавляем минус в строке _stringInput
+            _journal.value = _stringInput.value
+        }
+    }
+
 
     private fun negateWhenCalculating(secondCharNegate: Char?, stringLengthNegate: Int) {
 
@@ -528,6 +531,7 @@ class CalcViewModel : ViewModel() {
         _hasNum1.value = false
         _journal.value = _stringInput.value //и перезаписываем journal, удаляя старые данные
     }
+
 
     /*event listeners для toast*/
     fun onToast1ShownComplete() {
