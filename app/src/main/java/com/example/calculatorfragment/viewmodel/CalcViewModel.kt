@@ -311,53 +311,31 @@ class CalcViewModel : ViewModel() {
     /*прочие мат. операции*/
     fun percent() {
 
-        /*если не введено ни одно число и не нажата ни одна арифметическая операция*/
-        if (_hasNum1.value == false && _stringInput.value == "") {
-
-            _showToast1.value = true //выводим подсказку
-
+        when {
+            /*если не введено ни одно число и не нажата ни одна арифметическая операция*/
+            _hasNum1.value == false
+                    && _stringInput.value == ""
+            -> _showToast1.value = true //выводим подсказку
 
             /*если введено только 1 число, а кнопка арифметической операции не нажата, то
             рассчитать 1 процент*/
-        } else if (_hasNum1.value == false) {
-
-            _num1.value = _stringInput.value?.toDouble()
-            _journal.value =
-                _journal.value + "\u200b * 1% \u200b" //записываем в историю, что мы рассчитали 1%
-            _num2.value = _num1.value?.div(100)
-            output(_num2.value) //обрезаем ноль, если нужно, и выводим в строке showInput
-            _isLastPressedOperation.value = false
-            _isBsAvailable.value = false
-            _stringInput.value = _num2.value.toString() //передаем результат в _stringInput.value
-            _num1.value = _num2.value //передаем в _num1.value
-            _num2.value = 0.0 //обнуляем _num2.value
+            _hasNum1.value == false
+                    && _stringInput.value != ""
+            -> getOnePercent()
 
 
             /*если есть _num1.value и оператор, но num2 нет - то выводим подсказку*/
-        } else if (_stringInput.value == ""
-            && _isLastPressedOperation.value == true
-        ) {
-            _showToast2.value = true
+            _stringInput.value == ""
+                    && _isLastPressedOperation.value == true
+            -> _showToast2.value = true
 
 
             /*если заданы 2 операнда и арифметическая операция в operator - рассчитываем
-            _num2.value процентов от _num1.value*/
-        } else if (_stringInput.value != ""
-            && _operator.value != '0'
-            && _isLastPressedOperation.value == false
-
-        ) {
-            /*сначала вычисляем _num2.value процентов от _num1.value и перезаписываем _num2.value*/
-            _num2.value = _stringInput.value?.toDouble()
-            _num2.value = _num2.value!! * _num1.value!!.div(100)
-            _stringInput.value = _num2.value.toString()
-            operationCalc() //выполняем заданную арифм. операцию
-            _journal.value =
-                journal.value + "% \u200b" //записываем в строку журнала знак % и пробел
-            _isLastPressedOperation.value = false
-            _isBsAvailable.value = false
-            _operator.value = '0'
-            _num2.value = 0.0
+           _num2.value процентов от _num1.value*/
+            _stringInput.value != ""
+                    && _operator.value != '0'
+                    && _isLastPressedOperation.value == false
+            -> getSomePercents()
         }
     }
 
@@ -436,7 +414,8 @@ class CalcViewModel : ViewModel() {
 
 
                 /*если Negate нажимают когда ввели первое число */
-                _hasNum1.value == false -> negateWhenFirst(secondCharNegate)
+                _hasNum1.value == false
+                -> negateWhenFirst(secondCharNegate)
 
 
                 /*если кнопка negate нажата после числа по ходу вычислений*/
@@ -532,6 +511,33 @@ class CalcViewModel : ViewModel() {
         _journal.value = _stringInput.value //и перезаписываем journal, удаляя старые данные
     }
 
+    private fun getOnePercent() {
+        _num1.value = _stringInput.value?.toDouble()
+        _journal.value =
+            _journal.value + "\u200b * 1% \u200b" //записываем в историю, что мы рассчитали 1%
+        _num2.value = _num1.value?.div(100)
+        output(_num2.value) //обрезаем ноль, если нужно, и выводим в строке showInput
+        _isLastPressedOperation.value = false
+        _isBsAvailable.value = false
+        _stringInput.value =
+            _num2.value.toString() //передаем результат в _stringInput.value
+        _num1.value = _num2.value //передаем в _num1.value
+        _num2.value = 0.0 //обнуляем _num2.value
+    }
+
+    private fun getSomePercents() {
+        /*сначала вычисляем _num2.value процентов от _num1.value и перезаписываем _num2.value*/
+        _num2.value = _stringInput.value?.toDouble()
+        _num2.value = _num2.value!! * _num1.value!!.div(100)
+        _stringInput.value = _num2.value.toString()
+        operationCalc() //выполняем заданную арифм. операцию
+        _journal.value =
+            journal.value + "% \u200b" //записываем в строку журнала знак % и пробел
+        _isLastPressedOperation.value = false
+        _isBsAvailable.value = false
+        _operator.value = '0'
+        _num2.value = 0.0
+    }
 
     /*event listeners для toast*/
     fun onToast1ShownComplete() {
