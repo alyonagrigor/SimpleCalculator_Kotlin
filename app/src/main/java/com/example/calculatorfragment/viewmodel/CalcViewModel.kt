@@ -350,13 +350,6 @@ class CalcViewModel : ViewModel() {
             /*вычисляем длину строки*/
             val length = _stringInput.value?.length ?: -1
 
-            /*вычисляем второй символ в строке только если символа три, в остальных случаях это
-            значение не нужно*/
-            val secondChar = when (length) {
-                3 -> _stringInput.value?.get(1)
-                else -> null
-            }
-
             when {
                 /*если в строке _stringInput больше 3 символов, то неважно, есть ли минус, просто
                 удаляем последнюю цифру; либо если в строке осталось 2 символа, то минуса точно нет*/
@@ -365,24 +358,24 @@ class CalcViewModel : ViewModel() {
                     _journal.value = _journal.value?.dropLast(1)
                 }
 
+                /*если в строке осталась только 1 цифра, заменяем ее на ноль*/
+                length == 1 -> {
+                    _stringInput.value = "0"
+                    _journal.value = _journal.value?.dropLast(1)
+                    _isBsAvailable.value = false
+                }
+
                 /*если в строке 3 символа и второй - не минус, то последний символ можно стирать*/
-                length == 3 && secondChar != '-' -> {
+                length == 3 && getSecondChar() != '-' -> {
                     _stringInput.value = _stringInput.value?.dropLast(1)
                     _journal.value = _journal.value?.dropLast(1)
                 }
 
                 /*если в строке 3 символа и второй - минус, то нужно стирать все 3 символа:
                 цифру, минус, пробел*/
-                length == 3 && secondChar == '-' -> {
+                length == 3 && getSecondChar() == '-' -> {
                     _stringInput.value = "0"
                     _journal.value = _journal.value?.dropLast(3)
-                    _isBsAvailable.value = false
-                }
-
-                /*если в строке осталась только 1 цифра, заменяем ее на ноль*/
-                length == 1 -> {
-                    _stringInput.value = "0"
-                    _journal.value = _journal.value?.dropLast(1)
                     _isBsAvailable.value = false
                 }
             }
@@ -537,6 +530,11 @@ class CalcViewModel : ViewModel() {
         _isBsAvailable.value = false
         _operator.value = '0'
         _num2.value = 0.0
+    }
+
+
+    private fun getSecondChar(): Char? {
+       return _stringInput.value?.get(1)
     }
 
     /*event listeners для toast*/
