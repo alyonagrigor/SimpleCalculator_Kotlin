@@ -99,6 +99,7 @@ isBsAvailable  == true и запускает 1 из 4 сценариев:
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.math.BigDecimal
 
 class CalcViewModel : ViewModel() {
 
@@ -395,6 +396,7 @@ class CalcViewModel : ViewModel() {
 
             /*если строка не пустая, то получаем второй символ, который может быть минусом*/
             val stringLengthNegate = _stringInput.value?.length ?: -1
+            /*TODO refactor this*/
             val secondCharNegate = when (stringLengthNegate) {
                 in -1..2 -> null //если минус есть, то символов в строке 3 или больше, короткие
                 // строки нас не интересуют
@@ -521,7 +523,7 @@ class CalcViewModel : ViewModel() {
     private fun getSomePercents() {
         /*сначала вычисляем _num2.value процентов от _num1.value и перезаписываем _num2.value*/
         _num2.value = _stringInput.value?.toDouble()
-        _num2.value = _num2.value!! * _num1.value!!.div(100)
+        _num2.value = (_num2.value?.times(_num1.value!!))?.div(100)
         _stringInput.value = _num2.value.toString()
         operationCalc() //выполняем заданную арифм. операцию
         _journal.value =
